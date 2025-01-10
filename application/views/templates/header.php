@@ -1,7 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-bs-theme="dark" data-color-theme="Blue_Theme" data-layout="horizontal">
+<html lang="en" dir="ltr" data-bs-theme="dark" data-color-theme="Blue_Theme"  data-layout="horizontal" data-boxed-layout="full">
 
 	<head>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const htmlElement = document.documentElement; // Get the <html> element
+
+			// Check if the layout is saved in local storage
+			const savedLayout = localStorage.getItem("boxedLayout") || "full";
+
+			// Set the attribute based on the saved value
+			htmlElement.setAttribute("data-boxed-layout", savedLayout);
+
+			// Example: If you allow switching layouts via a button
+			document.querySelector("#toggleLayout").addEventListener("click", function () {
+				const currentLayout = htmlElement.getAttribute("data-boxed-layout");
+				const newLayout = currentLayout === "full" ? "boxed" : "full";
+				htmlElement.setAttribute("data-boxed-layout", newLayout);
+
+				// Save the new layout to local storage
+				localStorage.setItem("boxedLayout", newLayout);
+			});
+		});
+
+	</script>
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<!-- Required meta tags -->

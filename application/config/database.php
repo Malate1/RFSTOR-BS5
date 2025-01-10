@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
+	'hostname' => '172.16.161.43',
+	'username' => 'rfstor',
+	'password' => 'rfstor2023',
 	'database' => 'rfstor',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

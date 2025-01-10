@@ -233,8 +233,8 @@
                                 <th class="wd-lg-30p">Requested To</th>
                                 <th class="wd-lg-30p">Company</th>
                                 <th class="wd-lg-30p">BU</th>
-                                <th class="wd-lg-30p">Requested By</th>
-                                <th class="wd-lg-30p"style="width: 100px;">Purpose</th>
+                                <th class="wd-lg-20p">Requested By</th>
+                                <th class="wd-lg-40p ">Purpose</th>
                                 <th class="wd-lg-30p">Processed by</th>
                                 <th class="wd-lg-30p">Status</th>
 								<th class="wd-lg-30p">Actions</th>  
@@ -359,6 +359,12 @@
 			{   "searchable": false, 
 				"targets": 1 
 			},
+		 	{ 
+                targets: 6, // Index of the Purpose column (0-based)
+                className: 'text-wrap'
+            },
+
+
 			]
 		});
 
