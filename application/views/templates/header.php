@@ -84,6 +84,8 @@
 			table.dataTable.table-striped>tbody>tr:nth-of-type(2n+1).selected>* {
 				box-shadow: inset 0 0 0 9999px var(--bs-primary);
 			}
+
+			
 		</style>
 
 	</head>
@@ -993,9 +995,8 @@
 									</li>
 									<li class="sidebar-item">
 									<a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-										<span class="rounded-3">
-
-										<iconify-icon icon="solar:airbuds-case-minimalistic-line-duotone"></iconify-icon>
+										<span>
+											<i class="ti ti-users"></i>
 										</span>
 										<span class="hide-menu">Admin </span>
 										</a>

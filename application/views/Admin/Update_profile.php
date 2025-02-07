@@ -141,7 +141,7 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-3" id="pills-notifications-tab" data-bs-toggle="pill" data-bs-target="#pills-notifications" type="button" role="tab" aria-controls="pills-notifications" aria-selected="false">
-            <i class="ti ti-bell me-2 fs-6"></i>
+            <i class="ti ti-user me-2 fs-6"></i>
             <span class="d-none d-md-block">User Name </span>
             </button>
         </li>
@@ -150,207 +150,95 @@
         <div class="card-body">
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
-            <div class="row">
-                
-                <div class="col-lg-8 d-flex align-items-stretch">
-                <div class="card w-100 border position-relative overflow-hidden">
-                    <div class="card-body p-4">
-                    <h4 class="card-title">Change Password </h4>
-                    
-					<p class="card-subtitle mb-4"><b> NOTE: </b>Password must be <b>alphanumeric</b> and have atleast <b>8</b> characters in length e.g (Torrfs2022) </p>
-                    
-					<form form role="form" action="<?php echo base_url() ?>Admin/Change_pass" method="post" role="form">
-						<div class="mb-3">
-							<label for="oldPassword" class="form-label">Old Password</label>
-							<div class="input-group" id="show_hide_Opassword">
-								<input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
-								<button class="btn btn-outline-primary" type="button" id="togglePassword">
-									<i class="fa fa-eye-slash" aria-hidden="true"></i>
-								</button>
-							</div>
-						</div>
-
-						<div class="mb-3">
-							<label for="newPassword">New Password</label>
-							<div class="input-group" id="show_hide_Npassword">
-								<input type="password" class="form-control" id="pass" name="pass" oncopy="return false" required>
-									
-								<button class="btn btn-outline-primary" type="button" id="togglePassword2">
-									<i class="fa fa-eye-slash" aria-hidden="true"></i>
-								</button>
-								</div>
-								<div id="meter_wrapper" class="mt-3">
-									<div class="progress">
-										<div id="meter" class="progress-bar" style="width: 0;"></div>
+				<div class="row">
+					
+					<div class="col-lg-8 d-flex align-items-stretch">
+						<div class="card w-100 border position-relative overflow-hidden">
+							<div class="card-body p-4">
+							<h4 class="card-title">Change Password </h4>
+							
+							<i><p style="color: red;" class="card-subtitle mb-4"><b> NOTE: </b>Password must be <b>alphanumeric</b> and have atleast <b>8</b> characters in length e.g (Torrfs2022) </p></i>
+							
+							<form id="form" role="form" action="<?php echo base_url() ?>Admin/Change_pass" method="post" role="form">
+								<div class="mb-3">
+									<label for="oldPassword" class="form-label">Old Password</label>
+									<div class="input-group" id="show_hide_Opassword">
+										<input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
+										<button class="btn btn-outline-primary" type="button" id="togglePassword">
+											<i class="fa fa-eye-slash" aria-hidden="true"></i>
+										</button>
 									</div>
-									<small id="pass_type" class="text-muted"></small>
 								</div>
-						</div>
 
-                        <div class="mb-3">
-							<label for="cNewPassword" class="form-label">Confirm New Password</label>
-							<div class="input-group" id="show_hide_Cpassword">
-								<input type="password" class="form-control" id="cNewPassword" name="cNewPassword" required>
-								<button class="btn btn-outline-primary" type="button" id="togglePassword3">
-									<i class="fa fa-eye-slash" aria-hidden="true"></i>
-								</button>
+								<div class="mb-3">
+									<label for="newPassword" class="form-label">New Password</label>
+									<div class="input-group" id="show_hide_Npassword">
+										<input type="password" class="form-control" id="pass" name="pass" oncopy="return false" required>
+											
+										<button class="btn btn-outline-primary" type="button" id="togglePassword2">
+											<i class="fa fa-eye-slash" aria-hidden="true"></i>
+										</button>
+										</div>
+										<div id="meter_wrapper" class="mt-3">
+											<div class="progress">
+												<div id="meter" class="progress-bar" style="width: 0;"></div>
+											</div>
+											<small id="pass_type" class="text-muted"></small>
+										</div>
+								</div>
+
+								<div class="mb-3">
+									<label for="cNewPassword" class="form-label">Confirm New Password</label>
+									<div class="input-group" id="show_hide_Cpassword">
+										<input type="password" class="form-control" id="cNewPassword" name="cNewPassword" required>
+										<button class="btn btn-outline-primary" type="button" id="togglePassword3">
+											<i class="fa fa-eye-slash" aria-hidden="true"></i>
+										</button>
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="d-flex align-items-center justify-content-end mt-4 gap-6">
+									<button class="btn btn-primary">Save Password</button>
+									<button class="btn bg-danger-subtle text-danger">Cancel </button>
+									</div>
+								</div>
+							</form>
 							</div>
 						</div>
+					</div>
+					
+				</div>
+            </div>
 
-                        <div class="col-12">
-                            <div class="d-flex align-items-center justify-content-end mt-4 gap-6">
-                            <button class="btn btn-primary">Save </button>
-                            <button class="btn bg-danger-subtle text-danger">Cancel </button>
-                            </div>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-                </div>
-                
-            </div>
-            </div>
             <div class="tab-pane fade" id="pills-notifications" role="tabpanel" aria-labelledby="pills-notifications-tab" tabindex="0">
-            <div class="row justify-content-center">
-                <div class="col-lg-9">
-                <div class="card border shadow-none">
-                    <div class="card-body p-4">
-                    <h4 class="card-title">Notification Preferences </h4>
-                    <p class="card-subtitle mb-4">
-                    Select ___ notificaitons ou would like __ receive via email. Please ____ that you cannot opt
-                    out of receving _______
-                    messages, such __ payment, security or legal _____________.
-                    </p>
-                    <form class="mb-7">
-                        <label for="exampleInputtext5" class="form-label">Email Address* </label>
-                        <input type="text" class="form-control" id="exampleInputtext5" placeholder="" required="" />
-                        <p class="mb-0">Required for notificaitons. </p>
-                    </form>
-                    <div>
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="text-bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-article text-dark d-block fs-7" width="22" height="22"></i>
-                            </div>
-                            <div>
-                            <h5 class="fs-4 fw-semibold">Our newsletter </h5>
-                            <p class="mb-0">We'll always let you ____ about important changes </p>
-                            </div>
-                        </div>
-                        <div class="form-check form-switch mb-0">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" />
-                        </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="text-bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-checkbox text-dark d-block fs-7" width="22" height="22"></i>
-                            </div>
-                            <div>
-                            <h5 class="fs-4 fw-semibold">Order Confirmation </h5>
-                            <p class="mb-0">You will be notified ____ customer order any product </p>
-                            </div>
-                        </div>
-                        <div class="form-check form-switch mb-0">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked1" checked="" />
-                        </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="text-bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-clock-hour-4 text-dark d-block fs-7" width="22" height="22"></i>
-                            </div>
-                            <div>
-                            <h5 class="fs-4 fw-semibold">Order Status Changed </h5>
-                            <p class="mb-0">You will be notified ____ customer make changes to ___ order </p>
-                            </div>
-                        </div>
-                        <div class="form-check form-switch mb-0">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked2" checked="" />
-                        </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="text-bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-truck-delivery text-dark d-block fs-7" width="22" height="22"></i>
-                            </div>
-                            <div>
-                            <h5 class="fs-4 fw-semibold">Order Delivered </h5>
-                            <p class="mb-0">You will be notified ____ the order is delivered </p>
-                            </div>
-                        </div>
-                        <div class="form-check form-switch mb-0">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked3" />
-                        </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="text-bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-mail text-dark d-block fs-7" width="22" height="22"></i>
-                            </div>
-                            <div>
-                            <h5 class="fs-4 fw-semibold">Email Notification </h5>
-                            <p class="mb-0">Turn on email notificaiton __ get updates through email </p>
-                            </div>
-                        </div>
-                        <div class="form-check form-switch mb-0">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked4" checked="" />
-                        </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-lg-9">
-                <div class="card border shadow-none">
-                    <div class="card-body p-4">
-                    <h4 class="card-title">Date & Time </h4>
-                    <p class="card-subtitle">Time zones and calendar _______ settings. </p>
-                    <div class="d-flex align-items-center justify-content-between mt-7">
-                        <div class="d-flex align-items-center gap-3">
-                        <div class="text-bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-clock-hour-4 text-dark d-block fs-7" width="22" height="22"></i>
-                        </div>
-                        <div>
-                            <p class="mb-0">Time zone </p>
-                            <h5 class="fs-4 fw-semibold">(UTC + 02:00) Athens, ________ </h5>
-                        </div>
-                        </div>
-                        <a class="text-dark fs-6 d-flex align-items-center justify-content-center bg-transparent p-2 fs-4 rounded-circle" href="javascript:void(0)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Download">
-                        <i class="ti ti-download"></i>
-                        </a>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-lg-9">
-                <div class="card border shadow-none">
-                    <div class="card-body p-4">
-                    <h4 class="card-title">Ignore Tracking </h4>
-                    <div class="d-flex align-items-center justify-content-between mt-7">
-                        <div class="d-flex align-items-center gap-3">
-                        <div class="text-bg-light rounded-1 p-6 d-flex align-items-center justify-content-center">
-                            <i class="ti ti-player-pause text-dark d-block fs-7" width="22" height="22"></i>
-                        </div>
-                        <div>
-                            <h5 class="fs-4 fw-semibold">Ignore Browser Tracking </h5>
-                            <p class="mb-0">Browser Cookie </p>
-                        </div>
-                        </div>
-                        <div class="form-check form-switch mb-0">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked5" />
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-12">
-                <div class="d-flex align-items-center justify-content-end gap-6">
-                    <button class="btn btn-primary">Save </button>
-                    <button class="btn bg-danger-subtle text-danger">Cancel </button>
-                </div>
-                </div>
-            </div>
+			<div class="row">
+					
+					<div class="col-lg-8 d-flex align-items-stretch">
+						<div class="card w-100 border position-relative overflow-hidden">
+							<div class="card-body p-4">
+								<h4 class="card-title">Change Username</h4>
+								<br>
+								<form id="changeUsernameForm" role="form" method="post">
+									<div class="mb-3">
+										<label for="username" class="form-label">Username</label>
+										<div class="input-group">
+											<input type="text" class="form-control" id="username" name="username" value="<?= $this->session->userdata('username'); ?>" required>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="d-flex align-items-center justify-content-end mt-4 gap-6">
+											<button class="btn btn-primary" type="submit">Save Username</button>
+											<button class="btn bg-danger-subtle text-danger" type="button" onclick="window.location.reload();">Cancel</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					
+				</div>
             </div>
             
         </div>
@@ -450,6 +338,50 @@
                     icon.removeClass("fa-eye").addClass("fa-eye-slash");
                 }
             });
+
+			$('#form').submit(function(e) {
+				e.preventDefault();
+				
+				$.ajax({
+					url: "<?= base_url('Admin/Change_pass') ?>",
+					type: "POST",
+					data: $(this).serialize(),
+					dataType: "json",
+					success: function(response) {
+						Swal.fire({
+							icon: response.status === 'success' ? 'success' : 'error',
+							title: response.status === 'success' ? 'Success!' : 'Error!',
+							text: response.message
+						}).then(() => {
+							if (response.status === 'success') {
+								location.reload();
+							}
+						});
+					}
+				});
+			});
+
+			$('#changeUsernameForm').submit(function(e) {
+				e.preventDefault();
+				
+				$.ajax({
+					url: "<?= base_url('Admin/Change_username') ?>",
+					type: "POST",
+					data: $(this).serialize(),
+					dataType: "json",
+					success: function(response) {
+						Swal.fire({
+							icon: response.status === 'success' ? 'success' : response.status === 'info' ? 'info' : 'error',
+							title: response.status === 'success' ? 'Success!' : response.status === 'info' ? 'No Changes' : 'Error!',
+							text: response.message
+						}).then(() => {
+							if (response.status === 'success') {
+								location.reload();
+							}
+						});
+					}
+				});
+			});
         });
     </script>
 </div>

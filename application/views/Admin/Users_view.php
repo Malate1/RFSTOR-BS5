@@ -46,7 +46,7 @@
 	table.dataTable tbody tr > .dtfc-fixed-left,
 	table.dataTable tbody tr > .dtfc-fixed-right {
 		z-index: 1;
-		background-color: #ffffff;
+		/* background-color: #ffffff; */
 		color: #000;
 	}
 

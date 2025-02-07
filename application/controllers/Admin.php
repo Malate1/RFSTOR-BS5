@@ -2033,60 +2033,158 @@
 
         }
 
-		public function Change_pass ()
-		{
-			$data['getUsertypes'] = $this->db->get('usertype')->result_array();
-			$title = 'Setup';
-            $this->ViewHeader($title); 
-			$this->load->library('form_validation');
-            $new = $this->input->post('newPassword');
+		// public function Change_pass ()
+		// {
+		// 	$data['getUsertypes'] = $this->db->get('usertype')->result_array();
+		// 	$title = 'Setup';
+        //     $this->ViewHeader($title); 
+		// 	$this->load->library('form_validation');
+        //     $new = $this->input->post('newPassword');
 
-			$this->form_validation->set_rules('oldPassword','Old password','required|max_length[20]');
-			$this->form_validation->set_rules('newPassword','New password','required|max_length[20]|min_length[8]|callback_alpha_dash_space');
-			$this->form_validation->set_rules('cNewPassword','Confirm new password','required|matches[newPassword]|max_length[20]');
-            $this->form_validation->set_message('alpha_dash_space', 'The password must have atleast 1 capital letter and atleast 1 number'); 
+		// 	$this->form_validation->set_rules('oldPassword','Old password','required|max_length[20]');
+		// 	$this->form_validation->set_rules('newPassword','New password','required|max_length[20]|min_length[8]|callback_alpha_dash_space');
+		// 	$this->form_validation->set_rules('cNewPassword','Confirm new password','required|matches[newPassword]|max_length[20]');
+        //     $this->form_validation->set_message('alpha_dash_space', 'The password must have atleast 1 capital letter and atleast 1 number'); 
 
-			if($this->form_validation->run() == FALSE)
-			{
+		// 	if($this->form_validation->run() == FALSE)
+		// 	{
 				
-                $data['errors'] = validation_errors('<p style="color:red;">', '</p>'); 
+        //         $data['errors'] = validation_errors('<p style="color:red;">', '</p>'); 
 
-                $this->load->view('Admin/Update_profile',$data);
-				$this->load->view('templates/footer');
-			}
+        //         $this->load->view('Admin/Update_profile',$data);
+		// 		$this->load->view('templates/footer');
+		// 	}
             
-			else
-			{
-						//$old = $this->input->post('oldPassword');
-				$old = $this->security->xss_clean(md5($this->input->post('oldPassword')));
-				$admin_id = $this->session->user_id;
-				$info = array(
-					'password' => $this->security->xss_clean(md5($this->input->post('newPassword'))),
+		// 	else
+		// 	{
+		// 				//$old = $this->input->post('oldPassword');
+		// 		$old = $this->security->xss_clean(md5($this->input->post('oldPassword')));
+		// 		$admin_id = $this->session->user_id;
+		// 		$info = array(
+		// 			'password' => $this->security->xss_clean(md5($this->input->post('newPassword'))),
 
-				);
-				$query = $this->Admin_Model->CheckOld($admin_id,$old);
-				if($query -> num_rows() > 0){
-					$result = $this->Admin_Model->changePassword($admin_id, $info);     
-					$this->session->set_flashdata('success2', 'Password updation successful the new password is: ' .$this->security->xss_clean($this->input->post('newPassword'))); 
+		// 		);
+		// 		$query = $this->Admin_Model->CheckOld($admin_id,$old);
+		// 		if($query -> num_rows() > 0){
+		// 			$result = $this->Admin_Model->changePassword($admin_id, $info);     
+		// 			$this->session->set_flashdata('success2', 'Password updation successful the new password is: ' .$this->security->xss_clean($this->input->post('newPassword'))); 
                 
-                $action = '<b>'. $this->session->name . '</b>' . ' has ' . '<b>' .'updated ' . '</b>' . ' his/her password';
+        //         $action = '<b>'. $this->session->name . '</b>' . ' has ' . '<b>' .'updated ' . '</b>' . ' his/her password';
                 
-                    $data1 = array(
-                        'user_id'   => $this->session->user_id,
-                        'action'   => $action,
-                        'type'  => 'Setup'
-                    );
-                $this->Admin_Model->addLogs($data1);
+        //             $data1 = array(
+        //                 'user_id'   => $this->session->user_id,
+        //                 'action'   => $action,
+        //                 'type'  => 'Setup'
+        //             );
+        //         $this->Admin_Model->addLogs($data1);
 					  
-					redirect('update-profile');
-					$this->load->view('templates/footer');
-				}else{
-					$this->session->set_flashdata('errormsg','Old password is incorrect');
-					redirect('update-profile');
-					$this->load->view('templates/footer');
-				} 
+		// 			redirect('update-profile');
+		// 			$this->load->view('templates/footer');
+		// 		}else{
+		// 			$this->session->set_flashdata('errormsg','Old password is incorrect');
+		// 			redirect('update-profile');
+		// 			$this->load->view('templates/footer');
+		// 		} 
+		// 	}
+		// }
+
+		public function Change_pass() {
+			$this->load->library('form_validation');
+		
+			// Set validation rules
+			$this->form_validation->set_rules('oldPassword', 'Old Password', 'required');
+			$this->form_validation->set_rules('pass', 'New Password', 'required|min_length[8]|alpha_numeric');
+			$this->form_validation->set_rules('pass', 'New Password', 'required|min_length[8]|regex_match[/^[a-zA-Z0-9!@#$%^&*()_+.,-]+$/]');
+
+		
+			if ($this->form_validation->run() == FALSE) {
+				$response = [
+					'status' => 'error',
+					'message' => validation_errors()
+				];
+			} else {
+				$user_id = $this->session->userdata('user_id');
+				$old_password = md5($this->input->post('oldPassword')); // Hash input with MD5
+				$new_password = md5($this->input->post('pass')); // Hash new password with MD5
+		
+				// Verify old password
+				$user = $this->Admin_Model->get_user_by_id($user_id);
+				if ($user && $user->password === $old_password) {
+					// Update password
+					$update = $this->Admin_Model->update_password($user_id, $new_password);
+		
+					if ($update) {
+						$response = [
+							'status' => 'success',
+							'message' => 'Password successfully updated.'
+						];
+					} else {
+						$response = [
+							'status' => 'error',
+							'message' => 'Failed to update password. Try again later.'
+						];
+					}
+				} else {
+					$response = [
+						'status' => 'error',
+						'message' => 'Incorrect old password.'
+					];
+				}
 			}
+		
+			echo json_encode($response);
 		}
+
+		public function Change_username() {
+			$this->load->library('form_validation');
+		
+			$user_id = $this->session->userdata('user_id');
+			$current_user = $this->Admin_Model->get_user_by_id($user_id);
+		
+			$new_username = $this->input->post('username');
+		
+			// Apply 'is_unique' only if username is changed
+			$unique_rule = ($new_username !== $current_user->username) ? '|is_unique[users.username]' : '';
+		
+			// Set validation rules
+			$this->form_validation->set_rules('username', 'Username', 'required|min_length[4]|max_length[20]|alpha_numeric' . $unique_rule);
+		
+			if ($this->form_validation->run() == FALSE) {
+				$response = [
+					'status' => 'error',
+					'message' => strip_tags(validation_errors()) // Remove <p> tags
+				];
+			} else {
+				// Update username only if it's changed
+				if ($new_username !== $current_user->username) {
+					$update = $this->Admin_Model->update_username($user_id, $new_username);
+		
+					if ($update) {
+						// Update session with the new username
+						$this->session->set_userdata('username', $new_username);
+
+						$response = [
+							'status' => 'success',
+							'message' => 'Username successfully updated.'
+						];
+					} else {
+						$response = [
+							'status' => 'error',
+							'message' => 'Failed to update username. Try again later.'
+						];
+					}
+				} else {
+					$response = [
+						'status' => 'info',
+						'message' => 'No changes were made.'
+					];
+				}
+			}
+		
+			echo json_encode($response);
+		}
+		
+		
 
 		public function ProfileUpdateView() {
 			$data['getUsertypes'] = $this->db->get('usertype')->result_array();

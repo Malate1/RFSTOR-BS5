@@ -7,6 +7,22 @@
 	 		$this->db3 = $this->load->database('ebs', TRUE);
 	 	}
 
+		public function get_user_by_id($user_id) {
+			return $this->db->get_where('users2', ['user_id' => $user_id])->row();
+		}
+	
+		public function update_password($user_id, $new_password) {
+			$this->db->set('password', $new_password);
+			$this->db->where('user_id', $user_id);
+			return $this->db->update('users2');
+		}
+
+		public function update_username($user_id, $new_username) {
+			$this->db->set('username', $new_username);
+			$this->db->where('user_id', $user_id);
+			return $this->db->update('users2');
+		}
+
 	 	public function getDataCountByMonth($year = null) {
 			$this->db->select("DATE_FORMAT(datetoday, '%b-%y') AS month, 
 							   SUM(CASE WHEN typeofrequest = 'RFS' THEN 1 ELSE 0 END) AS rfs_count, 
