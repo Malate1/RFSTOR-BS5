@@ -261,46 +261,32 @@
 
 	    private function make_query($condition){   
 
-	        //$this->db->from('blacklist'); 
-	 		//->join('pis.locate_business_unit', 'locate_business_unit.bunit_code = pis.employee3.bunit_code')
-	    	$this->db->select('*')
+	        
+	    	$this->db->select('id, date, request_id, action, rtype, type')
 	        	->from('logs')
-	        	//->join('burole', 'burole.user_id = users2.user_id')
+	        	
 	  
 	 			->where("$condition");
 	 				
 
-	        $i = 0;
-	        foreach ($this->search_column as $item) // loop column 
-	        {
-	            if($_POST['search']['value']) // if datatable send POST for search
-	            {
-	                 
-	                if($i===0) // first loop
-	                {
-	                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
-	                    $this->db->like($item, $_POST['search']['value']);
-	                }
-	                else
-	                {
-	                    $this->db->or_like($item, $_POST['search']['value']);
-	                }
-	    
-	                if(count($this->search_column) - 1 == $i) //last loop
-	                    $this->db->group_end(); //close bracket
-	            }
-	            $i++;
-	        } 
-
-	        if(isset($_POST['order'])) // here order processing
-	        {
-	            $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-	        } 
-	        else if(isset($this->order))
-	        {
-	            $order = $this->order;
-	            $this->db->order_by(key($order), $order[key($order)]);
-	        }  
+				if (!empty($_POST['search']['value'])) {
+				$this->db->group_start();
+				foreach ($this->search_column as $key => $column) {
+					if ($key == 0) {
+						$this->db->like($column, $_POST['search']['value']);
+					} else {
+						$this->db->or_like($column, $_POST['search']['value']);
+					}
+				}
+				$this->db->group_end();
+			}
+	
+			// Ordering
+			if (isset($_POST['order']) && isset($this->column_order[$_POST['order']['0']['column']])) {
+				$this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+			} else {
+				$this->db->order_by(key($this->order), $this->order[key($this->order)]);
+			}  
 	    }
 
 	    private function make_query2(){   

@@ -3,7 +3,7 @@
 
 	<head>
 
-	<script>
+	<!-- <script>
 		document.addEventListener("DOMContentLoaded", function () {
 			const htmlElement = document.documentElement; // Get the <html> element
 
@@ -24,7 +24,7 @@
 			});
 		});
 
-	</script>
+	</script> -->
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<!-- Required meta tags -->
@@ -104,8 +104,8 @@
 					<!-- ---------------------------------- -->
 					<div class="brand-logo d-flex align-items-center justify-content-between">
 						<a hre#" class="text-nowrap logo-img">
-							<img src="<?= base_url() ?>assets/images/logos/dark.png" class="dark-logo" width="180"
-								alt="modernize-img" />
+							<!-- <img src="<?= base_url() ?>assets/images/logos/dark.png" class="dark-logo" width="180"
+								alt="modernize-img" /> -->
 							<img src="<?= base_url() ?>assets/images/logos/dark.png" class="light-logo" width="180"
 								alt="modernize-img" />
 						</a>
@@ -362,23 +362,29 @@
 										<span class="hide-menu">ISR </span>
 									</a>
 								</li>
+							<?php } ?>
 								
 
-								<li class="nav-small-cap">
-									<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-									<span class="hide-menu">LOGS </span>
-								</li>
-
+							<li class="nav-small-cap">
+								<i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+								<span class="hide-menu">LOGS </span>
+							</li>
+							<?php if($this->session->superadmin == 'Yes'){ ?>
+	
 								<li class="sidebar-item">
-									<a class="sidebar-link" href="#" aria-expanded="false">
+									<a class="sidebar-link" href="<?php echo base_url()?>view-logs" aria-expanded="false">
 										<span>
 											<i class="ti ti-clipboard"></i>
 										</span>
 										<span class="hide-menu">ACTIVITY LOGS </span>
 									</a>
-								</li>
+								</li>	
+							<?php } ?>
+
+							<?php if($getType4 == true){ ?>
+	
 								<li class="sidebar-item">
-									<a class="sidebar-link" href="#" aria-expanded="false">
+									<a class="sidebar-link" href="view-logs-r" aria-expanded="false">
 										<span>
 											<i class="ti ti-clipboard"></i>
 										</span>
@@ -386,6 +392,9 @@
 									</a>
 								</li>
 							<?php } ?>
+								
+								
+							
 
 
 						</ul>
@@ -436,9 +445,9 @@
 							</ul>
 
 							<div class="d-block d-lg-none py-4">
-								<a hre#" class="text-nowrap logo-img">
-									<img src="<?= base_url() ?>assets/images/logos/dark.png" class="dark-logo" width="180"
-										alt="modernize-img" />
+								<a href="#" class="text-nowrap logo-img">
+									<!-- <img src="<?= base_url() ?>assets/images/logos/dark.png" class="dark-logo" width="180"
+										alt="modernize-img" /> -->
 									<img src="<?= base_url() ?>assets/images/logos/dark.png" class="light-logo"
 										width="180" alt="modernize-img" />
 								</a>
@@ -682,8 +691,8 @@
 								</li>
 								<li class="nav-item d-none d-xl-block">
 									<a href="#" class="text-nowrap nav-link">
-										<img src="<?= base_url() ?>assets/images/logos/dark.png" class="dark-logo"
-											width="180" alt="modernize-img" />
+										<!-- <img src="<?= base_url() ?>assets/images/logos/dark.png" class="dark-logo"
+											width="180" alt="modernize-img" /> -->
 										<img src="<?= base_url() ?>assets/images/logos/dark.png" class="light-logo"
 											width="180" alt="modernize-img" />
 									</a>
@@ -1251,20 +1260,50 @@
 										<span class="hide-menu">Logs </span>
 									</a>
 									<ul aria-expanded="false" class="collapse first-level">
+									<?php if($this->session->superadmin == 'Yes'){ ?>
+		
 										<li class="sidebar-item">
-											<a href="ico#" class="sidebar-link">
-												<i class="ti ti-circle"></i>
+											<a href="<?php echo base_url()?>view-logs" class="sidebar-link">
+												<i class="ti ti-receipt"></i>
 												<span class="hide-menu">Activity Logs </span>
 											</a>
 										</li>
+									<?php } ?>
+
+									<?php if($getType4 == true){ ?>
+
 										<li class="sidebar-item">
-											<a href="ic#" class="sidebar-link">
-												<i class="ti ti-circle"></i>
+											<a href="<?php echo base_url()?>view-logs-r" class="sidebar-link">
+												<i class="ti ti-receipt"></i>
 												<span class="hide-menu">Requests Logs </span>
 											</a>
 										</li>
+									<?php } ?>
+
 									</ul>
 								</li>
+
+								<li class="sidebar-item">
+									<a data-bs-toggle="modal" data-bs-target="#user_manual" href="#" class="sidebar-link">
+									<span>
+										<i class="ti ti-clipboard"></i>
+									</span>
+										<span class="hide-menu">User's Manual</span>
+									</a>
+								</li>
+
+								<li class="sidebar-item">
+									<a href="<?= base_url() ?>view-contact"  class="sidebar-link">
+									<span>
+										<i class="ti ti-phone"></i>
+									</span>
+										<span class="hide-menu">Contact Us</span>
+									</a>
+								</li>
+
+								
+
+								
 
 							</ul>
 						</nav>
@@ -1277,6 +1316,44 @@
 				<script src="<?= base_url(); ?>assets/libs/sweetalert2/dist/sweetalert2.min.js"></script>
 				<!-- <script src="<?= base_url(); ?>assets/js/forms/sweet-alert.init.js"></script> -->
 				<script src="<?= base_url(); ?>assets/js/password.js"></script>
+
+				<div id="user_manual" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable modal-xl">
+						<div class="modal-content">
+							<div class="modal-header d-flex align-items-center">
+								<h4 class="modal-title" id="myLargeModalLabel">
+								Online TOR & RFS User's Manual
+								</h4>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active" id="rfs-tab" data-bs-toggle="tab" href="#rfs_tab" role="tab" aria-controls="rfs_tab" aria-selected="true">REQUEST FOR SET-UP (RFS)</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="tor-tab" data-bs-toggle="tab" href="#tor_tab" role="tab" aria-controls="tor_tab" aria-selected="false">TRANSACTION OVERRIDE REQUEST (TOR)</a>
+									</li>
+								</ul>
+								<br>
+
+								<div class="tab-content">
+									<div class="tab-pane fade show active" id="rfs_tab" role="tabpanel" aria-labelledby="rfs-tab">
+										<iframe src="<?=base_url()?>uploads/profile-pic/RFS USER MANUAL.pdf" width="100%" height="600" allow="autoplay"></iframe>
+									</div>
+									<div class="tab-pane fade" id="tor_tab" role="tabpanel" aria-labelledby="tor-tab">
+										<iframe src="<?=base_url()?>uploads/profile-pic/TOR USER MANUAL.pdf" width="100%" height="600" allow="autoplay"></iframe>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start"
+									data-bs-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div> 
 
 				<div id="viewRemarksModal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel"
 					aria-hidden="true">
@@ -1332,6 +1409,33 @@
 					</div>
 				</div>
 
+				<div id="addRemarksModalSup" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel"
+					aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable modal-xl">
+						<div class="modal-content">
+							<div class="modal-header d-flex align-items-center">
+								<h4 class="modal-title" id="myLargeModalLabel">
+									Add Remarks
+								</h4>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body" style="height: 250px">
+								<form id="addRemarksSup" method="post">
+									<div id="addremarks_content_a"></div>
+
+									<button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+									<button type="reset" class="btn btn-danger" value="Reset">Reset</button>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start"
+									data-bs-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div id="editRemarksModal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel"
 					aria-hidden="true">
 					<div class="modal-dialog modal-dialog-scrollable modal-xl">
@@ -1346,6 +1450,33 @@
 							<div class="modal-body" style="height: 250px">
 								<form id="editRemarks" method="post">
 									<div id="editremarks_content"></div>
+
+									<button type="submit" class="btn btn-primary" value="Submit">Submit</button>
+									<button type="reset" class="btn btn-danger" value="Reset">Reset</button>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn bg-danger-subtle text-danger  waves-effect text-start"
+									data-bs-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="editRemarksModalSup" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel"
+					aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable modal-xl">
+						<div class="modal-content">
+							<div class="modal-header d-flex align-items-center">
+								<h4 class="modal-title" id="myLargeModalLabel">
+									Edit Remarks
+								</h4>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body" style="height: 250px">
+								<form id="editRemarksSup" method="post">
+									<div id="editremarks_content_a"></div>
 
 									<button type="submit" class="btn btn-primary" value="Submit">Submit</button>
 									<button type="reset" class="btn btn-danger" value="Reset">Reset</button>

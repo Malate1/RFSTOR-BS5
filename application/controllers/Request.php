@@ -1812,6 +1812,8 @@
             @$bu_name = $this->Admin_Model->bu_name($row->buid); 
 
             @$emp = $this->employee_model->find_an_employee5($row->userid); 
+			$it = $this->employee_model->find_an_employee5(@$row->remarks_savedby);
+            $sup = $this->employee_model->find_an_employee5(@$row->remarks_savedby_sup);
             @$dept_code = $this->employee_model->find_an_employee3($emp->emp_id);
             @$dept = $this->employee_model->dept_name($dept_code->bunit_code, $dept_code->company_code, $dept_code->dept_code);
 
@@ -1916,31 +1918,50 @@
                         </div>
                     </div>';
 
-                    if($row->remarks != ''){
-                    echo'
-                        <div class="col-md-12">
-                            <div class="form-group mb-2">
-                                <label class="form-label" for="remarks">Remarks</label><br>
-                                <input type="hidden" class="form-control" name="id" id="id" value="'.$row->reqid.'">
-                                <textarea class="form-control" rows="4"  autofocus  id="remarks" name="remarks">';echo $row->remarks; echo'</textarea>
-								<br>
-                                <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
-                                <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
-                            </div>
-                        </div>';
-                    }else{
-                    echo'
-                    
-                        <div class="col-md-12">
-                            <div class="form-group mb-2">
-                                <label class="form-label" for="remarks">Remarks</label><br>
-                                <input type="hidden" class="form-control" name="id" id="id" value="'.$row->reqid.'">
-                                <textarea class="form-control" rows="4"  autofocus id="remarks" name="remarks" ></textarea>
-								<br>
-                                <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
-                                <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
-                            </div>
-                        </div>';
+					if ($row->remarks != '') {
+                        echo '
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label class="form-label" for="remarks">MIS/IT Remarks';
+                                    if (!empty($row->remarks_savedby)) {
+                                        echo ' (' . @$it->name . ' on ' . date("M. d, Y h:i:s A", strtotime(@$row->date_remarked)) . ')';
+                                    }
+                                    echo '</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus  id="remarks" name="remarks">';echo $row->remarks; echo'</textarea>
+
+                                    <label class="form-label" for="remarks_sup">Supervisor Remarks';
+                                    if (!empty($row->remarks_savedby_sup)) {
+                                        echo ' (' . @$sup->name . ' on ' . date("M. d, Y h:i:s A", strtotime(@$row->date_remarked_sup)) . ')';
+                                    }
+                                    echo '</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus  id="remarks" name="remarks">';echo $row->remarks_sup; echo'</textarea>
+									<br>
+                                    <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
+                                    <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
+                                </div>
+                            </div>';
+                    } else {
+                        echo '
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label class="form-label" for="remarks">MIS/IT Remarks</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus id="remarks" name="remarks" ></textarea>
+                                    
+                                    <label class="form-label" for="remarks_sup">Supervisor Remarks</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus id="remarks_sup" name="remarks_sup" ></textarea>
+									<br>
+                                    <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
+                                    <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
+                                </div>
+                            </div>';
                     }
                     
                 echo'</div>
@@ -2160,6 +2181,8 @@
             $bu_name = $this->Admin_Model->bu_name($row->buid); 
 
             @$emp = $this->employee_model->find_an_employee5($row->userid); 
+			$it = $this->employee_model->find_an_employee5(@$row->remarks_savedby);
+            $sup = $this->employee_model->find_an_employee5(@$row->remarks_savedby_sup);
             @$dept_code = $this->employee_model->find_an_employee3($emp->emp_id);
             @$dept = $this->employee_model->dept_name($dept_code->bunit_code, $dept_code->company_code, $dept_code->dept_code);
 
@@ -2260,31 +2283,50 @@
                         </div>
                     </div>';
 
-                    if($row->remarks != ''){
-                    echo'
-                        <div class="col-md-12">
-                            <div class="form-group mb-2">
-                                <label class="form-label" for="remarks">Remarks</label><br>
-                                <input type="hidden" class="form-control" name="id" id="id" value="'.$row->reqid.'">
-                                <textarea class="form-control" rows="4"  autofocus  id="remarks" name="remarks">';echo $row->remarks; echo'</textarea>
-								<br>
-                                <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
-                                <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
-                            </div>
-                        </div>';
-                    }else{
-                    echo'
-                    
-                        <div class="col-md-12">
-                            <div class="form-group mb-2">
-                                <label class="form-label" for="remarks">Remarks</label><br>
-                                <input type="hidden" class="form-control" name="id" id="id" value="'.$row->reqid.'">
-                                <textarea class="form-control" rows="4"  autofocus id="remarks" name="remarks" ></textarea>
-								<br>
-                                <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
-                                <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
-                            </div>
-                        </div>';
+                    if ($row->remarks != '') {
+                        echo '
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label class="form-label" for="remarks">MIS/IT Remarks';
+                                    if (!empty($row->remarks_savedby)) {
+                                        echo ' (' . @$it->name . ' on ' . date("M. d, Y h:i:s A", strtotime(@$row->date_remarked)) . ')';
+                                    }
+                                    echo '</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus  id="remarks" name="remarks">';echo $row->remarks; echo'</textarea>
+
+                                    <label class="form-label" for="remarks_sup">Supervisor Remarks';
+                                    if (!empty($row->remarks_savedby_sup)) {
+                                        echo ' (' . @$sup->name . ' on ' . date("M. d, Y h:i:s A", strtotime(@$row->date_remarked_sup)) . ')';
+                                    }
+                                    echo '</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus  id="remarks" name="remarks">';echo $row->remarks_sup; echo'</textarea>
+									<br>
+                                    <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
+                                    <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
+                                </div>
+                            </div>';
+                    } else {
+                        echo '
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label class="form-label" for="remarks">MIS/IT Remarks</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus id="remarks" name="remarks" ></textarea>
+                                    
+                                    <label class="form-label" for="remarks_sup">Supervisor Remarks</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus id="remarks_sup" name="remarks_sup" ></textarea>
+									<br>
+                                    <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
+                                    <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
+                                </div>
+                            </div>';
                     }
                     
                 echo'</div>
@@ -2512,6 +2554,8 @@
             $bu_name = $this->Admin_Model->bu_name($row->buid); 
 
             @$emp = $this->employee_model->find_an_employee5($row->userid); 
+			$it = $this->employee_model->find_an_employee5(@$row->remarks_savedby);
+            $sup = $this->employee_model->find_an_employee5(@$row->remarks_savedby_sup);
             @$dept_code = $this->employee_model->find_an_employee3($emp->emp_id);
             @$dept = $this->employee_model->dept_name($dept_code->bunit_code, $dept_code->company_code, $dept_code->dept_code);
 
@@ -2635,31 +2679,50 @@
                         </div>
                     </div>';
 
-                    if($row->remarks != ''){
-                    echo'
-                        <div class="col-md-12">
-                            <div class="form-group mb-2">
-                                <label class="form-label" for="remarks">Remarks</label><br>
-                                <input type="hidden" class="form-control" name="id" id="id" value="'.$row->reqid.'">
-                                <textarea class="form-control" rows="4"  autofocus  id="remarks" name="remarks">';echo $row->remarks; echo'</textarea>
-								<br>
-                                <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
-                                <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button>
-                            </div>
-                        </div>';
-                    }else{
-                    echo'
-                    
-                        <div class="col-md-12">
-                            <div class="form-group mb-2">
-                                <label class="form-label" for="remarks">Remarks</label><br>
-                                <input type="hidden" class="form-control" name="id" id="id" value="'.$row->reqid.'">
-                                <textarea class="form-control" rows="4"  autofocus id="remarks" name="remarks" ></textarea>
-								<br>
-                                <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
-                                <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
-                            </div>
-                        </div>';
+                    if ($row->remarks != '') {
+                        echo '
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label class="form-label" for="remarks">MIS/IT Remarks';
+                                    if (!empty($row->remarks_savedby)) {
+                                        echo ' (' . @$it->name . ' on ' . date("M. d, Y h:i:s A", strtotime(@$row->date_remarked)) . ')';
+                                    }
+                                    echo '</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus  id="remarks" name="remarks">';echo $row->remarks; echo'</textarea>
+
+                                    <label class="form-label" for="remarks_sup">Supervisor Remarks';
+                                    if (!empty($row->remarks_savedby_sup)) {
+                                        echo ' (' . @$sup->name . ' on ' . date("M. d, Y h:i:s A", strtotime(@$row->date_remarked_sup)) . ')';
+                                    }
+                                    echo '</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus  id="remarks" name="remarks">';echo $row->remarks_sup; echo'</textarea>
+									<br>
+                                    <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
+                                    <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
+                                </div>
+                            </div>';
+                    } else {
+                        echo '
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label class="form-label" for="remarks">MIS/IT Remarks</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus id="remarks" name="remarks" ></textarea>
+                                    
+                                    <label class="form-label" for="remarks_sup">Supervisor Remarks</label><br>
+                                    <input type="hidden" class="form-control" name="id" id="id" value="' . $row->reqid . '">
+                                    
+									<textarea class="form-control" rows="5"  autofocus id="remarks_sup" name="remarks_sup" ></textarea>
+									<br>
+                                    <button type="submit" class="btn btn-primary" value="Submit">Save Remarks</button> 
+                                    <button type="reset" class="btn btn-danger" value="Reset">Reset Remarks</button> 
+                                </div>
+                            </div>';
                     }
                     
                 echo'</div>
@@ -4064,17 +4127,25 @@
             
         }
 
-        public function addremarks_content() //displays content for adding remarks
+		public function addremarks_content() //displays content for adding remarks
         {
             $row = $this->Admin_Model->getDataRequest($_POST['ids']);
-           
+
             echo'<div class ="row">
-                    <div class="col-md-12">      
+                    <div class="col-md-6">      
                         <div class="form-group mb-2">
                             
                             <input type="hidden" class="form-control" name="id" id="id" value="'.$row->id.'">
-                            
+                            <label class="form-label">MIS/IT Remarks</label>
                             <textarea class="form-control" id="remarks" name="remarks" rows="5"></textarea>
+                            
+                        </div>
+                    </div> 
+                    <div class="col-md-6">      
+                        <div class="form-group mb-2">
+                            
+                            <label class="form-label">Supervisor Remarks</label>
+                            <textarea class="form-control" readonly id="remarks_sup" name="remarks_sup" rows="5"></textarea>
                         </div>
                     </div> 
                 </div>
@@ -4082,37 +4153,153 @@
        
         }
 
-        public function editremarks_content() //displays content for updating remarks
+		public function addremarks_content_a() //displays content for adding remarks
         {
             $row = $this->Admin_Model->getDataRequest($_POST['ids']);
-           
+
             echo'<div class ="row">
-                    <div class="col-md-12">      
+
+                    <div class="col-md-6">      
                         <div class="form-group mb-2">
-                            <p style="color: red"><b>Note: </b> Please do not delete or update the previous remarks if there are any.</p>
-                            <input type="hidden" class="form-control" name="id" id="id" autocomplete="off" value="'.$row->id.'" required>
-                            <input type="hidden" class="form-control" name="rfs_no" id="rfs_no" autocomplete="off" value="'.$row->requestnumber.'" required>
-                            <textarea class="form-control" id="remarks" name="remarks" rows="5">';echo $row->remarks; echo'</textarea>
+                            
+                            <label class="form-label">Supervisor Remarks</label>
+                            <textarea class="form-control" id="remarks_sup" name="remarks_sup" rows="5"></textarea>
                         </div>
-                    </div>  
+                    </div> 
+                    <div class="col-md-6">      
+                        <div class="form-group mb-2">
+                            
+                            <input type="hidden" class="form-control" name="id" id="id" value="'.$row->id.'">
+                            <label class="form-label">MIS/IT Remarks</label>
+                            <textarea class="form-control" readonly id="remarks" name="remarks" rows="5"></textarea>
+                            
+                        </div>
+                    </div> 
+                    
                 </div>
                 </div>';
        
         }
 
-        public function viewremarks_content() //displays content for viewing remarks
+		public function editremarks_content() //displays content for updating remarks
         {
             $row = $this->Admin_Model->getDataRequest($_POST['ids']);
-           
+            $it = $this->employee_model->find_an_employee5($row->remarks_savedby);
+            $sup = $this->employee_model->find_an_employee5($row->remarks_savedby_sup);
             echo'<div class ="row">
-                    <div class="col-md-12">      
+                    <div class="col-md-6">      
                         <div class="form-group mb-2">
-                            
-                            <input type="hidden" class="form-control" name="id" id="id" autocomplete="off" value="'.$row->id.'" >
-                            
-                            <textarea class="form-control" id="remarks" name="remarks" rows="5" readonly>';echo $row->remarks; echo'</textarea>
+                            <p style="color: red"><b>Note: </b> Please do not delete or update the previous remarks if there are any. ';
+                            if (!empty($row->remarks_savedby)) {
+                                echo '<br><b>Added by: </b>';
+                                echo @$it->name; 
+                                echo ' on ';
+                                echo date("M. d, Y h:i:s A", strtotime(@$row->date_remarked));
+                            }
+                            echo '</p>
+                            <input type="hidden" class="form-control" name="id" id="id" autocomplete="off" value="'.@$row->id.'" required>
+                            <input type="hidden" class="form-control" name="rfs_no" id="rfs_no" autocomplete="off" value="'.@$row->requestnumber.'" required>
+                            <label class="form-label">MIS/IT Remarks</label>
+                            <textarea class="form-control" id="remarks" name="remarks" rows="5">';echo @$row->remarks; echo'</textarea>
                         </div>
                     </div>  
+                    <div class="col-md-6">      
+                        <div class="form-group mb-2">
+                            <p style="color: red"><b>Note: </b> Please do not delete or update the previous remarks if there are any.  ';
+                            if (!empty($row->remarks_savedby_sup)) {
+                                echo '<br><b>Added by: </b>';
+                                echo @$sup->name; 
+                                echo ' on ';
+                                echo date("M. d, Y h:i:s A", strtotime(@$row->date_remarked_sup));
+                            } 
+                            echo '</p>
+                            <label class="form-label">Supervisor Remarks</label>
+                            <textarea class="form-control" readonly id="remarks_sup" name="remarks_sup" rows="5">';echo @$row->remarks_sup; echo'</textarea>
+                        </div>
+                    </div>
+                </div>
+                </div>';
+       
+        }
+
+        public function editremarks_content_a() //displays content for updating remarks
+        {
+            $row = $this->Admin_Model->getDataRequest($_POST['ids']);
+            $it = $this->employee_model->find_an_employee5($row->remarks_savedby);
+            $sup = $this->employee_model->find_an_employee5($row->remarks_savedby_sup);
+            echo'<div class ="row">
+                    <div class="col-md-6">      
+                        <div class="form-group mb-2">
+                            <p style="color: red"><b>Note: </b> Please do not delete or update the previous remarks if there are any. ';
+                            if (!empty($row->remarks_savedby_sup)) {
+                                echo '<br><b>Added by: </b>';
+                                echo @$sup->name; 
+                                echo ' on ';
+                                echo date("M. d, Y h:i:s A", strtotime(@$row->date_remarked_sup));
+                            } 
+                            echo '</p>
+                            <label class="form-label">Supervisor Remarks</label>
+                            <textarea class="form-control" id="remarks_sup" name="remarks_sup" rows="5">';echo @$row->remarks_sup; echo'</textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">      
+                        <div class="form-group mb-2">
+                            <p style="color: red"><b>Note: </b> Please do not delete or update the previous remarks if there are any. ';
+                            if (!empty($row->remarks_savedby)) {
+                                echo '<br><b>Added by: </b>';
+                                echo @$it->name; 
+                                echo ' on ';
+                                echo date("M. d, Y h:i:s A", strtotime(@$row->date_remarked));
+                            } 
+                            echo '</p>
+                            <input type="hidden" class="form-control" name="id" id="id" autocomplete="off" value="'.@$row->id.'" required>
+                            <input type="hidden" class="form-control" name="rfs_no" id="rfs_no" autocomplete="off" value="'.@$row->requestnumber.'" required>
+                            <label class="form-label">MIS/IT Remarks</label>
+                            <textarea class="form-control" readonly id="remarks" name="remarks" rows="5">';echo @$row->remarks; echo'</textarea>
+                        </div>
+                    </div>  
+                    
+                </div>
+                </div>';
+       
+        }
+
+		public function viewremarks_content() //displays content for viewing remarks
+        {
+            $row = $this->Admin_Model->getDataRequest($_POST['ids']);
+            $it = $this->employee_model->find_an_employee5(@$row->remarks_savedby);
+            $sup = $this->employee_model->find_an_employee5(@$row->remarks_savedby_sup);
+            echo'<div class ="row">
+                    <div class="col-md-6">      
+                        <div class="form-group mb-2">
+                            <p style="color: red"><b>Note: </b> Please do not delete or update the previous remarks if there are any. ';
+                            if (!empty($row->remarks_savedby)) {
+                                echo '<br><b>Added by: </b>';
+                                echo @$it->name; 
+                                echo ' on ';
+                                echo date("M. d, Y h:i:s A", strtotime(@$row->date_remarked));
+                            } 
+                            echo '</p>
+                            <input type="hidden" class="form-control" name="id" id="id" autocomplete="off" value="'.$row->id.'" required>
+                            <input type="hidden" class="form-control" name="rfs_no" id="rfs_no" autocomplete="off" value="'.$row->requestnumber.'" required>
+                            <label class="form-label">MIS/IT Remarks</label>
+                            <textarea class="form-control" id="remarks" name="remarks" rows="5">';echo $row->remarks; echo'</textarea>
+                        </div>
+                    </div>  
+                    <div class="col-md-6">      
+                        <div class="form-group mb-2">
+                            <p style="color: red"><b>Note: </b> Please do not delete or update the previous remarks if there are any. ';
+                            if (!empty($row->remarks_savedby_sup)) {
+                                echo '<br><b>Added by: </b>';
+                                echo @$sup->name; 
+                                echo ' on ';
+                                echo date("M. d, Y h:i:s A", strtotime(@$row->date_remarked_sup));
+                            } 
+                            echo '</p>
+                            <label class="form-label">Supervisor Remarks</label>
+                            <textarea class="form-control" id="remarks_sup" name="remarks_sup" rows="5">';echo @$row->remarks_sup; echo'</textarea>
+                        </div>
+                    </div>
                 </div>
                 </div>';
        
@@ -4120,24 +4307,82 @@
 
         public function save_remarks() //passing the data to Admin_model for saving the remarks 
         {
-            if(!empty($_POST))
-            {
+            if (!empty($_POST)) {
                 $request_id = $this->input->post('id');
-                $userid     = $this->session->userdata['user_id'];
-                $name      = $this->session->userdata['name'];
-                $remarks = $this->security->xss_clean($this->input->post('remarks'));
-                // if($remarks == ''){
-                //     $remarks1 = '';
-                // }else{
-                //     $remarks1 = $remarks."  (by: ".$name .")" ;
-                // }
+                $userid     = $this->session->userdata('user_id');
+                $name       = $this->session->userdata('name');
+            
+                // Clean inputs
+                $remarks     = $this->security->xss_clean($this->input->post('remarks'));
                 
-                $data = array(
-                    
-                    'remarks'           => $remarks     
-                );
-                $this->Admin_Model->saveRemarks($data,$request_id);
+            
+                // Check if MIS/IT remarks are provided
+                if ($remarks) {
+                    $data_remarks = array(
+                        'date_remarked'    => date("Y-m-d H:i:s"),
+                        'remarks_savedby'  => $userid,
+                        'remarks'          => $remarks
+                    );
+                } else {
+                    $data_remarks = array(
+                        'date_remarked'    => '',
+                        'remarks_savedby'  => '',
+                        'remarks'          => ''
+                    );
+                }
+                $this->Admin_Model->saveRemarks($data_remarks, $request_id);
+                
+                
+                $request_data   = $this->request_model->get_requests_data($request_id);
+                //$action = $this->session->name . ' has saved a remarks for ' . $request_data->typeofrequest . ' No. ' . $request_data->requestnumber;
 
+                $action = '<b>'. $this->session->name . '</b>' . ' has ' . '<b>' .'saved ' . '</b>' . ' a remarks for ' . $request_data->typeofrequest . ' No. ' . '<b>' .$request_data->requestnumber. '</b>';
+                    $data1 = array(
+                        'user_id'   => $this->session->user_id,
+                        'action'   => $action,
+                        'type'     => 'Request',
+                        'request_id' => $request_data->requestnumber,
+                        'rtype'    => $request_data->typeofrequest
+                    );
+                $this->Admin_Model->addLogs($data1);
+                $this->session->set_flashdata('SUCCESSMSG1', "success");
+            }
+            
+            $this->session->set_flashdata('SUCCESSMSG1', "success");
+            redirect('pending-rfs-status');
+
+        }
+
+        public function save_remarks_a() //passing the data to Admin_model for saving the remarks 
+        {
+            if (!empty($_POST)) {
+                $request_id = $this->input->post('id');
+                $userid     = $this->session->userdata('user_id');
+                $name       = $this->session->userdata('name');
+            
+                // Clean inputs
+                
+                $remarks_sup = $this->security->xss_clean($this->input->post('remarks_sup'));
+
+                // var_dump($remarks_sup);
+                // die();
+                
+                // Prepare data for Supervisor remarks if provided
+                if ($remarks_sup) {
+                    $data_remarks_sup = array(
+                        'date_remarked_sup'   => date("Y-m-d H:i:s"),
+                        'remarks_savedby_sup' => $userid,
+                        'remarks_sup'         => $remarks_sup
+                    );
+                } else {
+                    $data_remarks_sup = array(
+                        'date_remarked_sup'   => '',
+                        'remarks_savedby_sup' => '',
+                        'remarks_sup'         => ''
+                    );
+                }
+                $this->Admin_Model->saveRemarks($data_remarks_sup, $request_id);
+                
                 $request_data   = $this->request_model->get_requests_data($request_id);
                 //$action = $this->session->name . ' has saved a remarks for ' . $request_data->typeofrequest . ' No. ' . $request_data->requestnumber;
 

@@ -12,7 +12,7 @@
 	    var $search_column = array('requestnumber', 'groupname', 'companyname', 'business_unit', 'purpose' , 'name'); //set column field database for datatable searchable 
 	    var $order = array('requestnumber' => 'asc'); // default order 
 
-	    private function make_query1($table, $field, $field2, $type, $where){   
+	    private function make_query1($table, $field, $field2, $type, $where , $where2 = '', $where3 = ''){   
 
 	        $userid = $this->session->userdata['user_id'];
 			
@@ -26,7 +26,7 @@
 	 					->join('company', 'company.acroname = requests.companyname')
 	 					->join('business_unit', 'business_unit.id = requests.buid')
 	 					->join('users2', 'users2.user_id = requests.userid')
-	 					->where("typeofrequest = '$type' AND $where 
+	 					->where("typeofrequest = '$type' AND $where $where2 $where3
 								AND grouprole.user_id='$userid' AND grouprole.status='Active'
 								AND burole.user_id= '$userid' AND burole.status='Active'");
 
@@ -63,14 +63,24 @@
 	        }  
 	    }  
 
-	    public function get_requests($data){
+		public function get_requests($data){
 
 	    	$userid = $this->session->userdata['user_id'];
+			$where2 = '';
+			$where3 = '';
+			if (!empty($data['date_from']) && !empty($data['date_to']) != '') {
+				
+				//$this->db->where("datetoday BETWEEN '".date('Y-m-d 00:00:00', strtotime($data['date_from']))."' AND '".date('Y-m-d 23:59:00', strtotime($data['date_to']))."'");
+			   $where3 = "AND requests.datetoday BETWEEN '".date('Y-m-d 00:00:00', strtotime($data['date_from']))."' AND '".date('Y-m-d 23:59:00', strtotime($data['date_to']))."'";
+			}
 
-	 		if (!empty($data['date_from']) && !empty($data['date_to']) != '') {
+			if (!empty($data['usergroup'])) {
 	 			
-	 			$this->db->where("datetoday BETWEEN '".date('Y-m-d 00:00:00', strtotime($data['date_from']))."' AND '".date('Y-m-d 23:59:00', strtotime($data['date_to']))."'");
-	 		}
+				$where2 = "AND requests.togroup = '".$data['usergroup']."' ";
+
+				
+	 		
+			}
 
 	 		//usertype
 	 		if($data['usertype'] == "Execute"){
@@ -117,7 +127,7 @@
 
 
 
-	        $this->make_query1($table, $field, $field2, $type, $where);
+	        $this->make_query1($table, $field, $field2, $type, $where, $where2, $where3);
 	        if(@$_POST["length"] != -1)  
 	        {  
 	            $this->db->limit($_POST['length'], $_POST['start']);  
@@ -130,10 +140,21 @@
 
 	    	
 
-	 		if (!empty($data['date_from']) && !empty($data['date_to']) != '') {
+			$where2 = '';
+			$where3 = '';
+			if (!empty($data['date_from']) && !empty($data['date_to']) != '') {
+				
+				//$this->db->where("datetoday BETWEEN '".date('Y-m-d 00:00:00', strtotime($data['date_from']))."' AND '".date('Y-m-d 23:59:00', strtotime($data['date_to']))."'");
+			   $where3 = "AND requests.datetoday BETWEEN '".date('Y-m-d 00:00:00', strtotime($data['date_from']))."' AND '".date('Y-m-d 23:59:00', strtotime($data['date_to']))."'";
+			}
+
+			 if (!empty($data['usergroup'])) {
 	 			
-	 			$this->db->where("datetoday BETWEEN '".date('Y-m-d 00:00:00', strtotime($data['date_from']))."' AND '".date('Y-m-d 23:59:00', strtotime($data['date_to']))."'");
-	 		}
+				$where2 = "AND requests.togroup = '".$data['usergroup']."' ";
+
+				
+	 		
+			}
 
 	 		//usertype
 	 		if($data['usertype'] == "Execute"){
@@ -175,10 +196,10 @@
 				$field2 = "rfstype";
 				$type 	= "ISR";
 			}
-	        $this->make_query1($table, $field, $field2, $type, $where);  
+	        $this->make_query1($table, $field, $field2, $type, $where, $where2, $where3);  
 	        $query = $this->db->get();  
 	        return $query->num_rows();  
-	    }       
+	    }      
 	      
 	    public function get_all_data(){  
 	    

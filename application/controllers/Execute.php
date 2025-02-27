@@ -127,7 +127,7 @@
 
                         $rfs .= '<a class="btn mb-1 btn-danger rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light"  title="Cancel Request" style=" cursor: pointer"  onclick=updatestatusrequest('.$req->reqid.')> <i class="fa fa-times " aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
                         }
-                        if ($req->remarks == '') {
+                        if ($req->remarks == '' AND $req->remarks_sup == '') {
                             $rfs .= '
                                 <a class="btn mb-1 btn-primary rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" id="rem1-'.$req->reqid.'" title="Add Remarks" style="cursor: pointer"  data-bs-toggle="modal" data-bs-target="#addRemarksModal" onclick=addremarks_content('.$req->reqid.')><i class="fa fa-comment " aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
                         }else{
@@ -191,7 +191,7 @@
 
                         $tor.= '<a class="btn mb-1 btn-danger rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" title="Cancel Request" style=" cursor: pointer"  onclick=updatestatusrequest('.$req->reqid.')> <i class="fa fa-times " aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
                         }
-                        if ($req->remarks == '') {
+                        if ($req->remarks == '' AND $req->remarks_sup == '') {
                             $tor .= '
                                 <a class="btn mb-1 btn-primary rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" id="rem1-'.$req->reqid.'" title="Add Remarks" style="cursor: pointer"  data-bs-toggle="modal" data-bs-target="#addRemarksModal" onclick=addremarks_content('.$req->reqid.')><i class="fa fa-comment " aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
                         }else{
@@ -256,7 +256,7 @@
 
                         $isr .= '<a class="btn mb-1 btn-danger rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light"  title="Cancel Request" style=" cursor: pointer"  onclick=updatestatusrequest('.$req->reqid.')> <i class="fa fa-times " aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
                         }
-                        if ($req->remarks == '') {
+                        if ($req->remarks == '' AND $req->remarks_sup == '') {
                             $isr .= '
                                 <a class="btn mb-1 btn-primary rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" id="rem1-'.$req->reqid.'" title="Add Remarks" style="cursor: pointer"  data-bs-toggle="modal" data-bs-target="#addRemarksModal" onclick=addremarks_content('.$req->reqid.')><i class="fa fa-comment " aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
                         }else{

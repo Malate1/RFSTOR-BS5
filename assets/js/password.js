@@ -2166,51 +2166,72 @@ var flag = 0;
     })
 });
 
-//for table action buttons
-// $('#addRemarks').on("submit", function(e){
-//     var formData = new FormData($(this)[0]);
-//     e.preventDefault();
-//     var flag = 0;
-//         $.ajax({
-//         url: baseurl + 'save_remarks',
-//         type: 'POST',
-//         data: formData,
-//         processData: false,
-//         contentType: false,
-//         error: function() {
-//             Swal.fire({
-//               icon: 'error',
-//               title: 'Oops...',
-//               text: 'Something went wrong!'
-//             })
-//         },
+// for execute details remarks
+$('#addRemarksSup').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    var flag = 0;
+    
+    // Check if the remarks field is empty
+    if ($('#remarks_sup').val().trim() === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Cannot save an empty remarks!'
+        });
+        return; // Exit the function if remarks are empty
+    }    
 
-//         success: function(data) {            
-//             swal_message('success','Remarks Successfully Saved!');
-//             $('#addRemarksModal').modal('hide');
-//             var table = $('#dt-execute').DataTable();
-//             var currentPage = table.page();
+    Swal.fire({
+    title: 'Confirmation',
+    text: "Are you sure to save the remarks?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '',
+    confirmButtonText: 'Proceed!'
+    }).then((result) => {
+    if (result.isConfirmed) {
+        $.ajax({
+            url: baseurl + 'save_remarks_a',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            error: function() {
+                Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!'
+            })
+            },
+            success: function(data) {            
+                swal_message('success','Remarks Successfully Saved!');
+            $('#addRemarksModalSup').modal('hide');
+            var table = $('#dt-approve').DataTable();
+            var currentPage = table.page();
 
-//             table.ajax.reload(function () {
-//                 // Set the page back to the saved page number
-//                 table.page(currentPage).draw('page');
-//             }); 
-        
-       
+            table.ajax.reload(function () {
+                // Set the page back to the saved page number
+                table.page(currentPage).draw('page');
+            }); 
             
-//             if (!$.fn.DataTable.isDataTable('#dt-execute')) {
 
-//             $('#dt-execute').DataTable({
-//                 "aoColumnDefs": 
-//                 [{ "bSortable": false, "aTargets": [0] }]
-//             });
-//             }
-//             // setTimeout(function(){
-//             //     window.location.reload();
-//             // }, 2000);
-//         }
-//     });
-// });
+            if (!$.fn.DataTable.isDataTable('#dt-approve')) {
+
+                $('#dt-approve').DataTable({
+                    "aoColumnDefs": 
+                    [{ "bSortable": false, "aTargets": [0] }]
+                });
+            }
+            }
+        });
+    }else if (result.dismiss === Swal.DismissReason.cancel){
+        swal_message('info','No changes made!');
+        $('#addRemarksModalSup').modal('hide');
+    }
+    })
+});
 
 $('#addRemarks').on("submit", function(e){
     var formData = new FormData($(this)[0]);
@@ -2278,68 +2299,6 @@ $('#addRemarks').on("submit", function(e){
     })
 });
 
-//for table action buttons
-// $('#editRemarks').on("submit", function(e){
-//     var formData = new FormData($(this)[0]);
-//     e.preventDefault();
-//     var flag = 0;
-//         $.ajax({
-//         url: baseurl + 'save_remarks',
-//         type: 'POST',
-//         data: formData,
-//         processData: false,
-//         contentType: false,
-//         error: function() {
-//             Swal.fire({
-//               icon: 'error',
-//               title: 'Oops...',
-//               text: 'Something went wrong!'
-//             })
-//         },
-
-//         success: function(data) {            
-//             swal_message('success','Remarks Successfully Saved!');
-//             $('#editRemarksModal').modal('hide');
-            
-            
-//             var table = $('#dt-execute').DataTable();
-//             var currentPage = table.page();
-
-//             table.ajax.reload(function () {
-//                 // Set the page back to the saved page number
-//                 table.page(currentPage).draw('page');
-//             }); 
-//             if (!$.fn.DataTable.isDataTable('#dt-execute')) {
-//                 table_apr.destroy();
-//                 $('#dt-execute').DataTable({
-//                     "aoColumnDefs": 
-//                     [{ "bSortable": false, "aTargets": [0] }]
-//                 });
-//             }
-
-//             var table_apr = $('#dt-approve').DataTable();
-//             var currentPage2 = table_apr.page();
-
-//             table_apr.ajax.reload(function () {
-//                 // Set the page back to the saved page number
-//                 table_apr.page(currentPage2).draw('page');
-//             }); 
-//             if (!$.fn.DataTable.isDataTable('#dt-approve')) {
-//                 table.destroy();
-//                 $('#dt-approve').DataTable({
-//                     "aoColumnDefs": 
-//                     [{ "bSortable": false, "aTargets": [0] }]
-//                 });
-//             }
-
-
-//             // setTimeout(function(){
-//             //     window.location.reload();
-//             // }, 2000);
-//         }
-//     });
-// });
-
 $('#editRemarks').on("submit", function(e){
     var formData = new FormData($(this)[0]);
     e.preventDefault();
@@ -2402,6 +2361,72 @@ $('#editRemarks').on("submit", function(e){
     }else if (result.dismiss === Swal.DismissReason.cancel){
         swal_message('info','No changes made!');
         $('#editRemarksModal').modal('hide');
+    }
+    })
+});
+
+$('#editRemarksSup').on("submit", function(e){
+    var formData = new FormData($(this)[0]);
+    e.preventDefault();
+    var flag = 0;
+    
+    // Check if the remarks field is empty
+    if ($('#remarks_sup').val().trim() === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Cannot save an empty remarks!'
+        });
+        return; // Exit the function if remarks are empty
+    }  
+
+    Swal.fire({
+    title: 'Confirmation',
+    text: "Are you sure to update the remarks?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '',
+    confirmButtonText: 'Proceed!'
+    }).then((result) => {
+    if (result.isConfirmed) {
+        $.ajax({
+            url: baseurl + 'save_remarks_a',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            error: function() {
+                Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!'
+            })
+            },
+            success: function(data) {            
+                swal_message('success','Remarks Successfully Saved!');
+            $('#editRemarksModalSup').modal('hide');
+            var table = $('#dt-approve').DataTable();
+            var currentPage = table.page();
+
+            table.ajax.reload(function () {
+                // Set the page back to the saved page number
+                table.page(currentPage).draw('page');
+            }); 
+            
+
+            if (!$.fn.DataTable.isDataTable('#dt-approve')) {
+
+                $('#dt-approve').DataTable({
+                    "aoColumnDefs": 
+                    [{ "bSortable": false, "aTargets": [0] }]
+                });
+            }
+            }
+        });
+    }else if (result.dismiss === Swal.DismissReason.cancel){
+        swal_message('info','No changes made!');
+        $('#editRemarksModalSup').modal('hide');
     }
     })
 });
@@ -2941,6 +2966,44 @@ function editremarks_content(ids)
         },
         success: function(data) {                 
             $("#editremarks_content").html(data);
+        }
+    });
+}
+
+function addremarks_content_a(ids)
+{
+    $.ajax({
+        url:  'addremarks_content_a', 
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!'
+            })
+        },
+        success: function(data) {                 
+            $("#addremarks_content_a").html(data);
+        }
+    });
+}
+
+function editremarks_content_a(ids)
+{
+    $.ajax({
+        url:  'editremarks_content_a', 
+        type: 'POST',
+        data: {ids:ids},
+        error: function() {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Something went wrong!'
+            })
+        },
+        success: function(data) {                 
+            $("#editremarks_content_a").html(data);
         }
     });
 }

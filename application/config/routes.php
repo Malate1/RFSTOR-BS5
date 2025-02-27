@@ -102,9 +102,13 @@ $route['isr_create'] 			= 'Request/isr_create';
 
 $route['addremarks_content'] 	= 'Request/addremarks_content';
 $route['editremarks_content'] 	= 'Request/editremarks_content';
+$route['addremarks_content_a'] 	= 'Request/addremarks_content_a';
+$route['editremarks_content_a'] = 'Request/editremarks_content_a';
 $route['viewremarks_content'] 	= 'Request/viewremarks_content';
 // $route['userdetails_content'] 	= 'Request/userdetails_content';
 $route['save_remarks'] 			= 'Request/save_remarks';
+$route['save_remarks'] 			= 'Request/save_remarks';
+$route['save_remarks_a'] 		= 'Request/save_remarks_a';
 $route['remarksupdate'] 		= 'Request/remarksupdate';
 
 $route['groupsupdate'] 			= 'Request/reqgroupupdate';

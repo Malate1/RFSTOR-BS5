@@ -276,13 +276,13 @@
                 $sub_array[] = $reqlog->rtype;
                 // $requesttype = "";
                     if($reqlog->rtype === 'RFS'){
-                        $sub_array[] = '<a style="color: red; font-weight: bold; cursor: pointer"  data-toggle="modal" data-target="#ApproveRfsModal" onclick=approverfs_content('.$request_no->id.')>'.$reqlog->request_id.'</a>';
+                        $sub_array[] = '<a style="color: red; font-weight: bold; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#ApproveRfsModal" onclick=approverfs_content('.$request_no->id.')>'.$reqlog->request_id.'</a>';
                     }elseif ($reqlog->rtype === 'TOR') {
-                        $sub_array[] = '<a style="color: red; font-weight: bold; cursor: pointer"  data-toggle="modal" data-target="#ApproveTorModal" onclick=approvetor_content('.$request_no->id.')>'.$reqlog->request_id.'</a>';
+                        $sub_array[] = '<a style="color: red; font-weight: bold; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#ApproveTorModal" onclick=approvetor_content('.$request_no->id.')>'.$reqlog->request_id.'</a>';
                     }elseif ($reqlog->rtype == "" AND $reqlog->type == "Request") {
                         $sub_array[] ='<td><a style="color: red; font-weight: bold; ">'.$reqlog->request_id.'</a>';
                     }else{
-                       $sub_array[] ='<td><a style="color: red; font-weight: bold; cursor: pointer"  data-toggle="modal" data-target="#ApproveIsrModal" onclick=approveisr_content('.$request_no->id.')>'.$reqlog->request_id.'</a>';
+                       $sub_array[] ='<td><a style="color: red; font-weight: bold; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#ApproveIsrModal" onclick=approveisr_content('.$request_no->id.')>'.$reqlog->request_id.'</a>';
                     }    
                 // $sub_array[] = $requesttype;
                 $sub_array[] = $reqlog->action;
@@ -373,7 +373,7 @@
             $data['emp'] = $this->employee_model->find_employee_photo();
             $this->ViewHeader($title); // loads the header filtered by usertype   
             $this->load->view('Admin/Contact_view',$data); // loads the Users_view.php in views
-
+			$this->load->view('templates/footer');
         }
 
 		public function ViewUsers()
@@ -466,6 +466,7 @@
             $this->ViewHeader($title); // loads the header filtered by usertype   
               
             $this->load->view('Admin/Logs_view');
+			$this->load->view('templates/footer',$data);
         }
 
         public function ViewReqLogs()
@@ -476,6 +477,7 @@
             $this->ViewHeader($title); // loads the header filtered by usertype   
               
             $this->load->view('Admin/Reqlogs_view');
+			$this->load->view('templates/footer',$data);
         }
 
         //loads the page to edit the bu access for rfs, tor, isr

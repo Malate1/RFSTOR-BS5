@@ -6,7 +6,7 @@
 		content: var(--bs-breadcrumb-divider, "•");
 	}
 
-	/* .select2-container--default .select2-selection--single .select2-selection__arrow b {
+	.select2-container--default .select2-selection--single .select2-selection__arrow b {
 		border-color: #888 transparent transparent transparent;
 		border-style: none;
 		border-width: 5px 4px 0 4px;
@@ -17,7 +17,7 @@
 		position: absolute;
 		top: 50%;
 		width: 0;
-	} */
+	}
 
 	
 	.accordion-body {
@@ -105,6 +105,15 @@
 		font-size: 1em;
 	}
 
+	#dt-execute td:nth-child(7), 
+	#dt-execute th:nth-child(7) {
+		width: 20px !important; 
+		white-space: nowrap; /* Prevents text wrapping */
+		overflow: hidden;
+		text-overflow: ellipsis; /* Adds "..." if content overflows */
+	}
+
+
 
 </style>
 
@@ -191,6 +200,21 @@
                         
                 <br>
 				<div class="row">
+
+					<div class="col-3">
+						<form class="form-horizontal">
+							<label class="form-label" for="usergroup">User Group:</label>
+							<select style="width: 50%; padding:5px; border-style: none;" class=" select2 form-control" name="usergroup" id="usergroup">
+								<option></option>;'
+								<?php
+								$data1 = $this->Admin_Model->getUserGrouprole();
+
+								foreach ($data1 as $value) {?>
+									<option value="<?=$value->group_id?>"> <?=$value->groupname?> </option>
+								<?php } ?>
+							</select>
+						</form>
+					</div>
 					<div class="col-3">
 						<label for="date_from" class="form-label">Date From</label>
 						<div class="input-group">
@@ -224,7 +248,7 @@
 				
 					<br>
 					<div class="table-responsive">
-						<table id="dt-execute" class="table w-100 table-striped table-bordered display text-nowrap" style="border-radius: 10px;">
+						<table id="dt-execute" class="table  table-striped table-bordered display text-nowrap" style="border-radius: 10px;">
 										
 							<thead>
 					
@@ -234,8 +258,8 @@
                                 <th class="wd-lg-30p">Company</th>
                                 <th class="wd-lg-30p">BU</th>
                                 <th class="wd-lg-20p">Requested By</th>
-                                <th class="wd-lg-40p ">Purpose</th>
-                                <th class="wd-lg-30p">Processed by</th>
+                                <th class="wd-lg-20p">Purpose</th>
+                                <th class="wd-lg-20p">Processed by</th>
                                 <th class="wd-lg-30p">Status</th>
 								<th class="wd-lg-30p">Actions</th>  
 							</thead>
@@ -266,9 +290,19 @@
 		var status = $("a.status.active").attr('id');
         let dateFrom = $("input[name = 'date_from']").val();
         let dateTo = $("input[name = 'date_to']").val();
+		let usergroup = $('#usergroup').select2("val");
 
-		console.log(status, dateFrom, dateTo);
-        viewRequest(status, dateFrom, dateTo);
+		viewRequest(status, dateFrom, dateTo, usergroup);
+
+		$('#usergroup').on('change', function() {
+             
+			//let status = $("a.active").attr('id');
+			var status = $("a.status.active").attr('id');
+			let usergroup = this.value;
+			let dateFrom = $("input[name = 'date_from']").val();
+			let dateTo = $("input[name = 'date_to']").val();
+			viewRequest(status, dateFrom, dateTo, usergroup);
+		});
 
         $("a.status").click(function() {
 
@@ -277,7 +311,8 @@
             let status = this.id;
             let dateFrom = $("input[name = 'date_from']").val();
             let dateTo = $("input[name = 'date_to']").val();
-            viewRequest(status, dateFrom, dateTo);
+            let usergroup = $('#usergroup').select2("val");
+            viewRequest(status, dateFrom, dateTo, usergroup);
         });
 
         $("input[name = 'date_to']").change(function() {
@@ -285,7 +320,8 @@
             var status = $("a.status.active").attr('id');
             let dateFrom = $("input[name = 'date_from']").val();
             let dateTo = $(this).val();
-            viewRequest(status, dateFrom, dateTo);
+            let usergroup = $('#usergroup').select2("val");
+            viewRequest(status, dateFrom, dateTo, usergroup);
         });
 
         $("button#clear-date").click(function() {
@@ -294,7 +330,8 @@
             var status = $("a.status.active").attr('id');
             let dateFrom = $("input[name = 'date_from']").val();
             let dateTo = $(this).val();
-            viewRequest(status, dateFrom, dateTo);
+            let usergroup = $('#usergroup').select2("val");
+            viewRequest(status, dateFrom, dateTo, usergroup);
         });
 
 		$('.datepicker').datepicker({
@@ -316,7 +353,7 @@
 		return str.replace(/^\s+|\s+$/g, '');
 	}
 
-	function viewRequest(req_status, date_from, date_to) {
+	function viewRequest(req_status, date_from, date_to, usergroup) {
    
 		var typeofrequest = document.getElementById("typeofrequest").value;
 		var usertype      = document.getElementById("usertype").value;
@@ -333,7 +370,8 @@
                     typeofrequest:  typeofrequest,
                     usertype:       usertype,
                     date_from:      date_from,
-                    date_to:        date_to
+                    date_to:        date_to,
+					usergroup:      usergroup
 				}
 			},
 			"order": [ [ 0, 'desc' ]],
@@ -359,16 +397,21 @@
 			{   "searchable": false, 
 				"targets": 1 
 			},
-		 	{ 
-                targets: 6, // Index of the Purpose column (0-based)
-                className: 'text-wrap'
-            },
+
+			// { width: "20px", targets: 6 },
+
+			
+    
+		 	// { 
+            //     targets: 6, // Index of the Purpose column (0-based)
+            //     className: 'text-wrap'
+            // },
 
 
 			]
 		});
 
-		$('table#dt-approve').on('click', 'a', function() {
+		$('table#dt-execute').on('click', 'a', function() {
 
 			let [action, ids] = this.id.split('-');
 
