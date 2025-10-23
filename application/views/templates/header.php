@@ -171,6 +171,29 @@
 										<span class="hide-menu">Usergroups </span>
 									</a>
 								</li>
+
+								<li class="sidebar-item">
+									<a class="sidebar-link" href="<?= base_url('view-pending') ?>" aria-expanded="false">
+										<span>
+											<i class="ti ti-mail"></i>
+										</span>
+										<span class="hide-menu">Manage Pending Requests </span>
+									</a>
+								</li>
+
+								
+
+								<?php if($this->session->emp_id == '02723-2022' OR $this->session->emp_id == '02483-2023' OR $this->session->emp_id == '03972-2022' ){ ?>
+									<li class="sidebar-item">
+										<a class="sidebar-link" href="<?= base_url('view-deduct') ?>" aria-expanded="false">
+											<span>
+												<i class="ti ti-users"></i>
+											</span>
+											<span class="hide-menu">View Deduction </span>
+										</a>
+									</li>
+									
+								<?php } ?>
 							<?php } ?>
 
 							<?php if ($getType2 == true) { ?>
@@ -463,9 +486,9 @@
 									<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-center">
 
 										<li class="nav-item nav-icon-hover-bg rounded-circle">
-											<a class="nav-link moon dark-layout" href="javascript:void(0)">
+											<!-- <a class="nav-link moon dark-layout" href="javascript:void(0)">
 												<i class="ti ti-moon moon"></i>
-											</a>
+											</a> -->
 											<a class="nav-link sun light-layout" href="javascript:void(0)">
 												<i class="ti ti-sun sun"></i>
 											</a>
@@ -503,7 +526,7 @@
 																him </span>
 														</div>
 													</a>
-													<a href="javascript:void(0)"
+													<!-- <a href="javascript:void(0)"
 														class="py-6 px-7 d-flex align-items-center dropdown-item">
 														<span class="me-3">
 															<img src="<?= base_url() ?>assets/images/profile/user-3.jpg"
@@ -571,7 +594,7 @@
 															<span class="fs-2 d-block text-body-secondary">Congratulate
 																him </span>
 														</div>
-													</a>
+													</a> -->
 												</div>
 												<div class="py-6 px-7 mb-1">
 													<button class="btn btn-outline-primary w-100">See All Notifications
@@ -724,9 +747,7 @@
 										<i class="ti ti-align-justified fs-7"></i>
 									</a>
 									<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-center">
-										<!-- ------------------------------- -->
-										<!-- start language Dropdown -->
-										<!-- ------------------------------- -->
+										
 										<li class="nav-item nav-icon-hover-bg rounded-circle">
 											<a class="nav-link moon ">
 												<i class="ti ti-moon moon" id="theme-button"></i>
@@ -773,112 +794,81 @@
 											});
 										</script>
 
+										<?php if($getType4 == true){ ?>
+											<li class="nav-item nav-icon-hover-bg rounded-circle dropdown">
+												<a class="nav-link position-relative" href="javascript:void(0)" id="drop2"
+													aria-expanded="false">
+													<i class="ti ti-bell-ringing"></i>
+													<div class="notification bg-primary rounded-circle"></div>
+												</a>
+												<div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
+													aria-labelledby="drop2">
+													<div
+														class="d-flex align-items-center justify-content-between py-3 px-7">
+														<h5 class="mb-0 fs-5 fw-semibold">Request Notifications </h5>
+														
+														<span id="newAllCount" style="display: hidden;">0</span>
 
-										<li class="nav-item nav-icon-hover-bg rounded-circle dropdown">
-											<a class="nav-link position-relative" href="javascript:void(0)" id="drop2"
-												aria-expanded="false">
-												<i class="ti ti-bell-ringing"></i>
-												<div class="notification bg-primary rounded-circle"></div>
-											</a>
-											<div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up"
-												aria-labelledby="drop2">
-												<div
-													class="d-flex align-items-center justify-content-between py-3 px-7">
-													<h5 class="mb-0 fs-5 fw-semibold">Notifications </h5>
-													<span class="badge text-bg-primary rounded-4 px-3 py-1 lh-sm">5 new
-													</span>
+														<span class="badge text-bg-primary rounded-4 px-3 py-1 lh-sm" >
+														<span id="newCount">0</span>
+														</span>
+
+														
+													</div>
+													<div class="message-body" data-simplebar="">
+														<a href="<?=base_url('pending-rfs-status-e')?>"
+															class="py-6 px-7 d-flex align-items-center dropdown-item"
+															id="rfs">
+															<span class="me-3">
+																<img src="<?= base_url() ?>assets/images/profile/user-2.jpg"
+																	alt="user" class="rounded-circle" width="48"
+																	height="48" />
+															</span>
+															<div class="w-100">
+																<h6 class="mb-1 fw-semibold lh-base"><span id="newRFSCount"></span> pending RFS to execute 
+																</h6>
+																<span class="fs-2 d-block text-body-secondary">Check it out </span>
+															</div>
+														</a>
+
+														<a href="<?=base_url('pending-tor-status-e')?>"
+															class="py-6 px-7 d-flex align-items-center dropdown-item"
+															id="tor">
+															<span class="me-3">
+																<img src="<?= base_url() ?>assets/images/profile/user-2.jpg"
+																	alt="user" class="rounded-circle" width="48"
+																	height="48" />
+															</span>
+															<div class="w-100">
+																<h6 class="mb-1 fw-semibold lh-base"><span id="newTORCount"></span> pending TOR to execute 
+																</h6>
+																<span class="fs-2 d-block text-body-secondary">Check it out </span>
+															</div>
+														</a>
+
+														<a href="<?=base_url('pending-isr-status-e')?>"
+															class="py-6 px-7 d-flex align-items-center dropdown-item"
+															id="isr">
+															<span class="me-3">
+																<img src="<?= base_url() ?>assets/images/profile/user-2.jpg"
+																	alt="user" class="rounded-circle" width="48"
+																	height="48" />
+															</span>
+															<div class="w-100">
+																<h6 class="mb-1 fw-semibold lh-base"><span id="newISRCount"></span> pending ISR to execute 
+																</h6>
+																<span class="fs-2 d-block text-body-secondary">Check it out </span>
+															</div>
+														</a>
+														
+													</div>
+													<!-- <div class="py-6 px-7 mb-1">
+														<button class="btn btn-outline-primary w-100">See All Notifications
+														</button>
+													</div> -->
 												</div>
-												<div class="message-body" data-simplebar="">
-													<a href="javascript:void(0)"
-														class="py-6 px-7 d-flex align-items-center dropdown-item">
-														<span class="me-3">
-															<img src="<?= base_url() ?>assets/images/profile/user-2.jpg"
-																alt="user" class="rounded-circle" width="48"
-																height="48" />
-														</span>
-														<div class="w-100">
-															<h6 class="mb-1 fw-semibold lh-base">Roman Joined the Team!
-															</h6>
-															<span class="fs-2 d-block text-body-secondary">Congratulate
-																him </span>
-														</div>
-													</a>
-													<a href="javascript:void(0)"
-														class="py-6 px-7 d-flex align-items-center dropdown-item">
-														<span class="me-3">
-															<img src="<?= base_url() ?>assets/images/profile/user-3.jpg"
-																alt="user" class="rounded-circle" width="48"
-																height="48" />
-														</span>
-														<div class="w-100">
-															<h6 class="mb-1 fw-semibold lh-base">New message </h6>
-															<span class="fs-2 d-block text-body-secondary">Salma sent
-																you new _______ </span>
-														</div>
-													</a>
-													<a href="javascript:void(0)"
-														class="py-6 px-7 d-flex align-items-center dropdown-item">
-														<span class="me-3">
-															<img src="<?= base_url() ?>assets/images/profile/user-4.jpg"
-																alt="user" class="rounded-circle" width="48"
-																height="48" />
-														</span>
-														<div class="w-100">
-															<h6 class="mb-1 fw-semibold lh-base">Bianca sent payment
-															</h6>
-															<span class="fs-2 d-block text-body-secondary">Check your
-																earnings </span>
-														</div>
-													</a>
-													<a href="javascript:void(0)"
-														class="py-6 px-7 d-flex align-items-center dropdown-item">
-														<span class="me-3">
-															<img src="<?= base_url() ?>assets/images/profile/user-5.jpg"
-																alt="user" class="rounded-circle" width="48"
-																height="48" />
-														</span>
-														<div class="w-100">
-															<h6 class="mb-1 fw-semibold lh-base">Jolly completed tasks
-															</h6>
-															<span class="fs-2 d-block text-body-secondary">Assign her
-																new tasks </span>
-														</div>
-													</a>
-													<a href="javascript:void(0)"
-														class="py-6 px-7 d-flex align-items-center dropdown-item">
-														<span class="me-3">
-															<img src="<?= base_url() ?>assets/images/profile/user-6.jpg"
-																alt="user" class="rounded-circle" width="48"
-																height="48" />
-														</span>
-														<div class="w-100">
-															<h6 class="mb-1 fw-semibold lh-base">John received payment
-															</h6>
-															<span class="fs-2 d-block text-body-secondary">$230 deducted
-																from account </span>
-														</div>
-													</a>
-													<a href="javascript:void(0)"
-														class="py-6 px-7 d-flex align-items-center dropdown-item">
-														<span class="me-3">
-															<img src="<?= base_url() ?>assets/images/profile/user-7.jpg"
-																alt="user" class="rounded-circle" width="48"
-																height="48" />
-														</span>
-														<div class="w-100">
-															<h6 class="mb-1 fw-semibold lh-base">Roman Joined the Team!
-															</h6>
-															<span class="fs-2 d-block text-body-secondary">Congratulate
-																him </span>
-														</div>
-													</a>
-												</div>
-												<div class="py-6 px-7 mb-1">
-													<button class="btn btn-outline-primary w-100">See All Notifications
-													</button>
-												</div>
-											</div>
-										</li>
+											</li>
+										<?php } ?>
 
 										<li class="nav-item dropdown">
 											<a class="nav-link pe-0" href="javascript:void(0)" id="drop1"
@@ -1037,6 +1027,30 @@
 													<span class="hide-menu">Usergroups </span>
 												</a>
 											</li>
+
+											<li class="sidebar-item">
+												<a class="sidebar-link" href="<?= base_url('view-pending') ?>"
+													aria-expanded="false">
+													<span>
+														<i class="ti ti-notebook"></i>
+													</span>
+													<span class="hide-menu">Manage Pending Requests</span>
+												</a>
+											</li>
+
+											<?php if($this->session->emp_id == '02723-2022' OR $this->session->emp_id == '02483-2023' OR $this->session->emp_id == '03972-2022' ){ ?>
+												
+												<li class="sidebar-item">
+													<a class="sidebar-link" href="<?= base_url('view-deduct') ?>"
+														aria-expanded="false">
+														<span>
+															<i class="ti ti-users"></i>
+														</span>
+														<span class="hide-menu">View Deduction </span>
+													</a>
+												</li>
+												
+											<?php } ?>
 
 										</ul>
 									</li>
@@ -1741,4 +1755,327 @@
 
 				<script>
 					var baseurl = "<?php echo base_url(); ?>";
+
+					<?php if($getType4 == true){ ?>
+					var originalTitle = document.title;
+					var animationInterval; 
+					var marqueePosition = 0;
+					var stop ='';
+					var updateInterval; // Declare the update interval variable
+					var restartInterval = true; // Variable to control interval restart
+
+					// Function to handle bell button click
+					function handleBellButtonClick() {
+						$('#resetCountButton').click(function () {
+							
+							// Set a flag in session storage to remember that the button was clicked
+							localStorage.setItem('bellButtonClicked', 'true');
+
+							// Pause the update interval for 2 minutes (120000 milliseconds)
+							if (restartInterval) {
+								clearInterval(updateInterval); // Pause the interval
+								setTimeout(function () {
+									startUpdateInterval(); // Restart the interval after 2 minutes
+									restartInterval = true; // Set the flag to true for the next restart
+								}, 600000000); // 1 minute (adjust as needed)
+								restartInterval = false; // Set the flag to false to prevent multiple restarts
+								$('#newAllCount').hide();
+							}
+							// Hide the count and stop the title animation
+							$('#newAllCount').hide();
+							stopTitleAnimation();
+
+							
+						});
+					}
+
+					//Function to play a ringtone
+					function playRingtone() {
+					    var audio = new Audio('<?=base_url()?>assets/alarm4.mp3');
+					    audio.play();
+					    return audio; // Return the Audio object for later use
+					}
+
+			
+					function updateMenuCounts() {
+						
+						$.ajax({
+							url: '<?= base_url('Request/getLatestRequests') ?>',
+							method: 'GET',
+							dataType: 'json',
+							success: function(data) {
+								// Update the menu item text with the latest count
+								var rfs 	 = $('#rfs');
+								var tor 	 = $('#tor');
+								var isr 	 = $('#isr');
+								var rfsCount = parseInt(data.newRequestCount.rfsCount, 10);
+								var torCount = parseInt(data.newRequestCount.torCount, 10);
+								var isrCount = parseInt(data.newRequestCount.isrCount, 10);
+								// Check if the parsed values are valid integers, and if not, default them to 0
+								if (isNaN(rfsCount)) {
+									rfsCount = 0;
+									
+								}
+								if (isNaN(torCount)) {
+									torCount = 0;
+									
+								}
+								if (isNaN(isrCount)) {
+									isrCount = 0;
+									
+								}
+								// Calculate the total count
+								var totalCount = rfsCount + torCount + isrCount;
+								$('#newAllCount').text(totalCount);
+
+								if (rfsCount == 0) document.getElementById("rfs").style.display = "hidden";
+								if (torCount == 0) document.getElementById("tor").style.display = "hidden";
+								if (isrCount == 0) document.getElementById("isr").style.display = "hidden";
+
+								// if(rfsCount == 0){
+								// 	rfs.hide();
+								// } 
+								// if(torCount == 0){
+								// 	tor.hide();
+								// }
+								// if(isrCount == 0){
+								// 	isr.hide();
+								// }
+						
+								$('#newRFSCount').text(rfsCount);
+								$('#newTORCount').text(torCount);
+								$('#newISRCount').text(isrCount);
+
+								var newAllCountElement 	= $('#newAllCount');
+								$('#newCount').text(newAllCountElement.text());
+									
+
+								if (totalCount === 0) {
+									document.querySelector(".message-body").style.display = "none";
+								}
+
+								if (totalCount > 0) {
+									newAllCountElement.show();
+									handleBellButtonClick();
+
+									if (!originalTitle.includes("Execute")) {
+										// Animate the page title and show a notification
+										startTitleMarquee(' New Pending Requests! ', 60000);
+									} else {
+										newAllCountElement.hide();
+										stopTitleAnimation();
+
+										var bellButtonClicked = localStorage.getItem('bellButtonClicked') || 'false';
+										if (bellButtonClicked === 'true') {
+											// If it was clicked, hide the count and stop the animation
+											$('#newAllCount').hide();
+											stopTitleAnimation();
+										}
+
+										if (restartInterval) {
+											clearInterval(updateInterval); // Pause the interval
+											setTimeout(function () {
+												startUpdateInterval(); // Restart the interval after 2 minutes
+												restartInterval = true; // Set the flag to true for the next restart
+											}, 60000); // 1 minute
+											restartInterval = false; // Set the flag to false to prevent multiple restarts
+											$('#newAllCount').hide();
+										}
+										
+
+									}
+								} else {
+									
+									newAllCountElement.hide();
+									stopTitleAnimation();
+								}
+							},
+							error: function(error) {
+								console.error('Error fetching latest requests: ' + JSON.stringify(error));
+							}
+						});
+					}
+
+					// Function to animate the page title and show a notification
+					function startTitleMarquee(message, duration) {
+						clearInterval(animationInterval);
+
+						// var audio = playRingtone();
+
+						var titleLength = message.length;
+						var timer = 0;
+
+						animationInterval = setInterval(function () {
+							var animatedTitle = message.substring(marqueePosition, titleLength) + message.substring(0, marqueePosition);
+							document.title = animatedTitle;
+
+							marqueePosition = (marqueePosition + 1) % titleLength;
+							timer += 100;
+
+							if (timer >= duration) {
+								clearInterval(animationInterval);
+								document.title = originalTitle; // Restore the original title
+								// audio.pause(); // Pause the ringtone when the animation stops
+								// audio.currentTime = 0; // Reset the playback position to the beginning
+								console.log('Animation executed.'); // Log the animation execution
+							}
+						}, 500); // Adjust the animation speed as needed (e.g., 500 milliseconds)
+					}
+
+					// Function to stop the title animation
+					function stopTitleAnimation() {
+						clearInterval(animationInterval);
+						document.title = originalTitle; // Restore the original title
+					}
+
+					// Function to start the update interval
+					function startUpdateInterval() {
+						updateMenuCounts();
+						updateInterval = setInterval(updateMenuCounts, 50000000);
+					}
+
+					// Start the initial update interval
+					startUpdateInterval();
+				<?php } ?>
+
+				<?php if($getType2 == true){ ?>
+					var originalTitle = document.title;
+					var animationInterval; 
+					var marqueePosition = 0;
+					var stop ='';
+					var updateInterval; // Declare the update interval variable
+					var restartInterval = true; // Variable to control interval restart
+					let toastCounter = 0;
+					let notificationInterval;
+					// Function to handle bell button click
+					function handleBellButtonClick() {
+						$('#resetCountButtonReq').click(function () {
+							
+							// Set a flag in session storage to remember that the button was clicked
+							localStorage.setItem('bellButtonClicked', 'true');
+
+							// Pause the update interval for 2 minutes (120000 milliseconds)
+							if (restartInterval) {
+								clearInterval(updateInterval); // Pause the interval
+								setTimeout(function () {
+									startUpdateInterval(); // Restart the interval after 2 minutes
+									restartInterval = true; // Set the flag to true for the next restart
+								}, 600000000); // 1 minute (adjust as needed)
+								restartInterval = false; // Set the flag to false to prevent multiple restarts
+								$('#newAllCountReq').hide();
+							}
+							// Hide the count and stop the title animation
+							$('#newAllCountReq').hide();
+							stopTitleAnimation();
+
+							
+						});
+					}
+
+					// Function to play a ringtone
+					// function playRingtone() {
+					//     var audio = new Audio('<?=base_url()?>assets/alarm4.mp3');
+					//     audio.play();
+					//     return audio; // Return the Audio object for later use
+					// }
+
+			
+					function updateMenuCounts() {
+						$.ajax({
+							url: '<?= base_url('Request/getLatestRequestsRemarks') ?>',
+							method: 'GET',
+							dataType: 'json',
+							success: function(data) {
+								var rfsCount = parseInt(data.newRequestCount.rfsCount, 10) || 0;
+								var torCount = parseInt(data.newRequestCount.torCount, 10) || 0;
+								var isrCount = parseInt(data.newRequestCount.isrCount, 10) || 0;
+								var reqNumbers = data.newRequestCount.req_numbers || [];
+								var totalCount = rfsCount + torCount + isrCount;
+
+								$('#newAllCountReq').text(totalCount);
+								$('#newRFSCountReq').text(rfsCount);
+								$('#newTORCountReq').text(torCount);
+								$('#newISRCountReq').text(isrCount);
+
+								if (totalCount > 0) {
+									$('#newAllCountReq').show();
+
+									if (toastCounter < 100) {
+										var requestList = reqNumbers.join(', ');
+										var Toast = Swal.mixin({
+											toast: true,
+											position: 'top',
+											showConfirmButton: false,
+											timer: 60000,
+											timerProgressBar: true,
+											customClass: {
+												container: 'custom-toast',
+											},
+										});
+
+										Toast.fire({
+											icon: 'info',
+											title: 'You have ' + totalCount + ' new request remarks: ' + requestList
+										}).then((result) => {
+											if (result.isConfirmed || result.dismiss === Swal.DismissReason.close) {
+												clearInterval(notificationInterval);
+												toastCounter = 100;
+											}
+										});
+
+										toastCounter++;
+									}
+								} else {
+									$('#newAllCountReq').hide();
+								}
+							},
+							error: function(error) {
+								console.error('Error fetching latest requests: ' + JSON.stringify(error));
+							}
+						});
+					}
+
+
+					// Function to animate the page title and show a notification
+					function startTitleMarquee(message, duration) {
+						clearInterval(animationInterval);
+
+						// var audio = playRingtone();
+
+						var titleLength = message.length;
+						var timer = 0;
+
+						animationInterval = setInterval(function () {
+							var animatedTitle = message.substring(marqueePosition, titleLength) + message.substring(0, marqueePosition);
+							document.title = animatedTitle;
+
+							marqueePosition = (marqueePosition + 1) % titleLength;
+							timer += 100;
+
+							if (timer >= duration) {
+								clearInterval(animationInterval);
+								document.title = originalTitle; // Restore the original title
+								// audio.pause(); // Pause the ringtone when the animation stops
+								// audio.currentTime = 0; // Reset the playback position to the beginning
+								console.log('Animation executed.'); // Log the animation execution
+							}
+						}, 500); // Adjust the animation speed as needed (e.g., 500 milliseconds)
+					}
+
+					// Function to stop the title animation
+					function stopTitleAnimation() {
+						clearInterval(animationInterval);
+						document.title = originalTitle; // Restore the original title
+					}
+
+					// Function to start the update interval
+					function startUpdateInterval() {
+						updateMenuCounts();
+						updateInterval = setInterval(updateMenuCounts, 50000000);
+					}
+
+					// Start the initial update interval
+					startUpdateInterval();
+					notificationInterval = setInterval(updateMenuCounts, 60000);
+				<?php } ?>
 				</script>

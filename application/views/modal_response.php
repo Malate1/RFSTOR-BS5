@@ -9,40 +9,44 @@
             	<div class="col-md-3">
             		<?php 
 
-            			@$profile = $this->employee_model->find_employee_name($emp->emp_id);
-            			@$profile2 = $this->employee_model->find_employee_exp($emp->emp_id);
+					@$profile  = $this->employee_model->find_employee_name($emp->emp_id);
+					@$profile2 = $this->employee_model->find_employee_exp($emp->emp_id);
+					@$profile3 = $this->employee_model->find_an_employee($emp->emp_id);
 
-            			//@$profile2 = $this->employee_model->find_an_employee7($emp->emp_id);
+					@$inputteddob  = !empty($profile->birthdate) ? date("Y-m-d", strtotime($profile->birthdate)) : null;
+					@$inputteddob1 = !empty($profile2->date_hired) ? date("Y-m", strtotime($profile2->date_hired)) : null;
+					@$inputteddob2 = !empty($profile3->eocdate) && $profile3->eocdate != "0000-00-00" 
+										? date("Y-m", strtotime($profile3->eocdate)) 
+										: null;
 
-            			@$inputteddob = date("Y-m-d",strtotime($profile->birthdate));
+					$currentDate = new DateTime();
 
-            			@$inputteddob1 = date("Y-m",strtotime($profile2->date_hired));
-            			//@$inputtedstart = date("Y-m-d",strtotime($profile2->date_hired));
-
-						// Get the current date
-						$currentDate = new DateTime();
-
-						// Create a DateTime object for the inputted DOB
+					// AGE
+					$age = null;
+					if ($inputteddob) {
 						$DOB = new DateTime($inputteddob);
-						$DOB1 = new DateTime($inputteddob1);
-						//$EXP = new DateTime($inputtedstart);
-						// Calculate the difference between the current date and the DOB
 						$age = $currentDate->diff($DOB)->y;
-						//$exp = $currentDate->diff($DOB1)->y;
+					}
 
-						$interval = $currentDate->diff($DOB1);
+					// SERVICE INTERVAL
+					if ($inputteddob1) {
+						$DOB1 = new DateTime($inputteddob1);
 
-				        $years = $interval->y;
-						$months = $interval->m;
-						$DOB1Formatted = $DOB1->format('Y-m-d H:i:s.u');
-
-						if ($DOB1Formatted == '1970-01-01 00:00:00.000000') {
-						    $year1 = '0';
-						    $month1 = '0';
+						if ($inputteddob2) {
+							$DOB2 = new DateTime($inputteddob2);
 						} else {
-						    $year1 = $years;
-						    $month1 = $months;
+							// If EOC is missing or "0000-00-00", use CURRENT DATE
+							$DOB2 = $currentDate;
 						}
+
+						$interval = $DOB2->diff($DOB1);
+						$year1    = $interval->y;
+						$month1   = $interval->m;
+					} else {
+						$year1  = 0;
+						$month1 = 0;
+					}
+
 				        
 
 				        //var_dump($DOB1);

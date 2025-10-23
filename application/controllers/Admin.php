@@ -149,12 +149,12 @@
                 $stat = "";
                 
                 if($req->executedby == '0' AND $req->cancelledby == '0'){
-                    $stat .= '<span class="label label-warning">Pending</span></td>';
+                    $stat .= '<span class="mb-1 badge  bg-warning-subtle text-warning">Pending</span></td>';
                 }elseif ($req->reqstatus == 'Cancelled') {
-                    $stat .= '<span class="label label-danger">'.$req->reqstatus.'</span></td>';
+                    $stat .= '<span class="mb-1 badge  bg-danger-subtle text-danger">'.$req->reqstatus.'</span></td>';
                 }
                 else{
-                   $stat .='<span class="label label-success">Executed</span></td>';
+                   $stat .='<span class="mb-1 badge  bg-success-subtle text-success">Executed</span></td>';
                 }    
 
                 $sub_array[] = $stat;
@@ -164,48 +164,48 @@
                     $rfs = "";
                     $taskid1 = 2;
                     $taskid2 = 3;
-                    if(strtoupper($payload['typeofrequest']) == 'RFS'){
-                    $rfs .= '
-                        <a id="RFS-'.$req->reqid.'" title="View Details RFS" style="color: orange; cursor: pointer"  data-toggle="modal" data-target="#ApproveRfsModalE" onclick=approverfs_content_e('.$req->reqid.')><i class="fa fa-file-text-o fa-lg" aria-hidden="true" ></i></a>&nbsp;&nbsp; || &nbsp;';
+                    if(strtoupper($payload['typeofrequest']) == 'RFS'){                    
+					$rfs .='
+                            <a class="btn mb-1 btn-warning rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" title="View Details RFS" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#ApproveRfsModalE" onclick=approverfs_content_e('.$req->reqid.')><i class="fa fa-clipboard" aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
                        
                         
                         if($req->approvedby != '0'){
                             $rfs .= '
-                                <a title="Request Status" style="color:  #3c8dbc; cursor: pointer"  data-toggle="modal" data-target="#showApprovedModal" onclick=approved_view_rfs('.$req->reqid.')><i class="fa fa-eye fa-lg" aria-hidden="true" ></i></a>';
+                                <a class="btn mb-1 btn-primary rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" title="Request Status" style="color:  #3c8dbc; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#showApprovedModal" onclick=approved_view_rfs('.$req->reqid.')><i class="fa fa-eye" aria-hidden="true" ></i></a>';
                         }else{
                             $rfs .= '
-                                <a title="Request Status" style="color:  orange; cursor: pointer"  data-toggle="modal" data-target="#showApprovedModal" onclick=approved_view_rfs('.$req->reqid.')><i class="fa fa-eye fa-lg" aria-hidden="true" ></i></a>';
+                                <a class="btn mb-1 btn-warning rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" title="Request Status" style="color:  orange; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#showApprovedModal" onclick=approved_view_rfs('.$req->reqid.')><i class="fa fa-eye" aria-hidden="true" ></i></a>';
                         }
                         $sub_array[] = $rfs;
                     
                     }elseif(strtoupper($payload['typeofrequest']) == 'TOR') {
                     $tor.= '
-                        <a id="TOR-'.$req->reqid.'" title="View Details TOR" style="color: orange; cursor: pointer"  data-toggle="modal" data-target="#ApproveTorModalE" onclick=approvetor_content_e('.$req->reqid.')><i class="fa fa-file-text-o fa-lg" aria-hidden="true" ></i></a>&nbsp;&nbsp; || &nbsp;';
+                        <a class="btn mb-1 btn-warning rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" id="TOR-'.$req->reqid.'" title="View Details TOR" style="color: orange; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#ApproveTorModalE" onclick=approvetor_content_e('.$req->reqid.')><i class="fa fa-clipboard" aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
 
                         
                         if($req->approvedby != '0'){
                             $tor.= '
-                                <a title="Request Status" style="color: #3c8dbc; cursor: pointer"  data-toggle="modal" data-target="#showApprovedModalTor" onclick=approved_view_tor('.$req->reqid.')><i class="fa fa-eye fa-lg" aria-hidden="true" ></i></a>&nbsp;&nbsp;';
+                                <a class="btn mb-1 btn-primary rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" title="Request Status" style="color: #3c8dbc; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#showApprovedModalTor" onclick=approved_view_tor('.$req->reqid.')><i class="fa fa-eye" aria-hidden="true" ></i></a>&nbsp;&nbsp;';
 
                         }else{
                             $tor.= '
-                                <a title="Request Status" style="color: orange; cursor: pointer"  data-toggle="modal" data-target="#showApprovedModalTor" onclick=approved_view_tor('.$req->reqid.')><i class="fa fa-eye fa-lg" aria-hidden="true" ></i></a>&nbsp;&nbsp;';
+                                <a class="btn mb-1 btn-warning rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" title="Request Status" style="color: orange; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#showApprovedModalTor" onclick=approved_view_tor('.$req->reqid.')><i class="fa fa-eye" aria-hidden="true" ></i></a>&nbsp;&nbsp;';
 
                         }
                         $sub_array[] = $tor;
                     
                     }elseif(strtoupper($payload['typeofrequest']) == 'ISR') {
                     $isr .= '
-                        <a id="ISR-'.$req->reqid.'" title="View Details ISR" style="color: orange; cursor: pointer"  data-toggle="modal" data-target="#ApproveIsrModalE" onclick=approveisr_content_e('.$req->reqid.')><i class="fa fa-file-text-o fa-lg" aria-hidden="true" ></i></a>&nbsp;&nbsp; || &nbsp;';
+                        <a class="btn mb-1 btn-warning rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" id="ISR-'.$req->reqid.'" title="View Details ISR" style="color: orange; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#ApproveIsrModalE" onclick=approveisr_content_e('.$req->reqid.')><i class="fa fa-clipboard" aria-hidden="true" ></i></a>&nbsp;&nbsp; ';
 
                         
                         if($req->approvedby != '0'){
                             $isr .= '
-                                <a title="Request Status" style="color: #3c8dbc; cursor: pointer"  data-toggle="modal" data-target="#showApprovedModalIsr" onclick=approved_view_isr('.$req->reqid.')><i class="fa fa-eye fa-lg" aria-hidden="true" ></i></a>&nbsp;&nbsp;';
+                                <a class="btn mb-1 btn-primary rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" title="Request Status" style="color: #3c8dbc; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#showApprovedModalIsr" onclick=approved_view_isr('.$req->reqid.')><i class="fa fa-eye" aria-hidden="true" ></i></a>&nbsp;&nbsp;';
 
                         }else{
                             $isr .= '
-                                <a title="Request Status" style="color: orange; cursor: pointer"  data-toggle="modal" data-target="#showApprovedModalIsr" onclick=approved_view_isr('.$req->reqid.')><i class="fa fa-eye fa-lg" aria-hidden="true" ></i></a>&nbsp;&nbsp;';
+                                <a class="btn mb-1 btn-warning rounded-circle round-40 btn-sm d-inline-flex align-items-center justify-content-center text-light" title="Request Status" style="color: orange; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#showApprovedModalIsr" onclick=approved_view_isr('.$req->reqid.')><i class="fa fa-eye" aria-hidden="true" ></i></a>&nbsp;&nbsp;';
 
                         }
                         $sub_array[] = $isr;
@@ -257,7 +257,7 @@
             //echo json_encode(['data' => $data]);
         }
 
-        public function reqlogs_list() //displays the list of users in the table for Admin users
+        public function reqlogs_list2() //displays the list of users in the table for Admin users
         {
         //$payload = $this->input->post(NULL,TRUE);
             $logs = $this->Admin_Model->get_reqlogs();
@@ -301,7 +301,7 @@
             // echo json_encode(['data' => $data]); '<a id="edit2-'.$id.'" class="action" style="color: inherit">'.$user->name.'</a>';
         }
 
-        public function logs_list() //displays the list of users in the table for Admin users
+        public function logs_list2() //displays the list of users in the table for Admin users
         {
         //$payload = $this->input->post(NULL,TRUE);
             $logs = $this->Admin_Model->get_logs();
@@ -332,6 +332,156 @@
 
             // echo json_encode(['data' => $data]); '<a id="edit2-'.$id.'" class="action" style="color: inherit">'.$user->name.'</a>';
         }
+
+		public function logs_list()
+		{
+			$start        = $this->input->post('start'); 
+			$length       = $this->input->post('length'); 
+			$searchValue  = $this->input->post('search')['value']; 
+
+			$sortColumn = $this->input->post('order')[0]['column'];
+			$sortDirection = $this->input->post('order')[0]['dir'];
+
+			// Map DataTables column index to database column
+			$columns = array(
+				0 => 'date',
+				1 => 'action'
+			);
+
+			// Query to get total records before filtering
+			$totalRecords = $this->db->count_all('logs');
+
+			// Query to get filtered records count
+			$this->db->from('logs');
+
+			if (!empty($searchValue)) {
+				$this->db->group_start();
+				$this->db->like('action', $searchValue);
+				$this->db->group_end();
+			}
+
+			$totalFilteredRecords = $this->db->count_all_results();
+
+			// Fetch paginated records
+			$this->db->select('*');
+			$this->db->from('logs');
+
+			if (!empty($searchValue)) {
+				$this->db->group_start();
+				$this->db->like('action', $searchValue);
+				$this->db->group_end();
+			}
+
+			$this->db->order_by($columns[$sortColumn], $sortDirection);
+			$this->db->limit($length, $start);
+			
+			$query = $this->db->get();
+			$result = $query->result();
+
+			// Process results to format date
+			$data = array();
+			foreach ($result as $row) {
+				$row->date = date("D • h:i:s A • M. d, Y", strtotime($row->date));
+				$data[] = $row;
+			}
+
+			// Return JSON response
+			$response = array(
+				'draw'            => intval($this->input->post('draw')), 
+				'recordsTotal'    => $totalRecords,
+				'recordsFiltered' => $totalFilteredRecords,
+				'data'            => $data
+			);
+
+			echo json_encode($response);
+		}
+
+		public function reqlogs_list()
+		{
+			$start        = $this->input->post('start'); 
+			$length       = $this->input->post('length'); 
+			$searchValue  = $this->input->post('search')['value']; 
+
+			$sortColumn = $this->input->post('order')[0]['column'];
+			$sortDirection = $this->input->post('order')[0]['dir'];
+
+			// Map DataTables column index to database column
+			$columns = array(
+				0 => 'date',
+				1 => 'rtype',
+				2 => 'request_id',
+				3 => 'action'
+			);
+
+			// Query to get total records before filtering
+			$totalRecords = $this->db->count_all('logs');
+
+			// Query to get filtered records count
+			$this->db->from('logs');
+
+			if (!empty($searchValue)) {
+				$this->db->group_start();
+				$this->db->like('action', $searchValue);
+				$this->db->group_end();
+			}
+
+			$totalFilteredRecords = $this->db->count_all_results();
+
+			// Fetch paginated records
+			$this->db->select('id, date, request_id, action, rtype, type');
+			$this->db->from('logs');
+			$this->db->where('type', 'Request');
+
+			if (!empty($searchValue)) {
+				$this->db->group_start();
+				$this->db->like('action', $searchValue);
+				$this->db->or_like('type', $searchValue);
+				$this->db->group_end();
+			}
+
+			$this->db->order_by($columns[$sortColumn], $sortDirection);
+			$this->db->limit($length, $start);
+			
+			$query = $this->db->get();
+			$result = $query->result();
+			
+			// Process results to format date and generate dynamic links
+			$data = array();
+			foreach ($result as $row) {
+
+				$request_no = $this->Admin_Model->request_no($row->request_id,$row->rtype);
+				$sub_array = array();
+				$sub_array[] = date("D • h:i:s A • M. d, Y", strtotime($row->date));
+				$sub_array[] = $row->rtype;
+
+
+				if ($row->rtype === 'RFS') {
+					$sub_array[] = '<a style="color: red; font-weight: bold; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#ApproveRfsModal" onclick=approverfs_content('.$request_no->id.')>'.$row->request_id.'</a>';
+				} elseif ($row->rtype === 'TOR') {
+					$sub_array[] = '<a style="color: red; font-weight: bold; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#ApproveTorModal" onclick=approvetor_content('.$request_no->id.')>'.$row->request_id.'</a>';
+				} elseif ($row->rtype == "" && $row->type == "Request") {
+					$sub_array[] = '<a style="color: red; font-weight: bold;">'.$row->request_id.'</a>';
+				} else {
+					$sub_array[] = '<a style="color: red; font-weight: bold; cursor: pointer"  data-bs-toggle="modal" data-bs-target="#ApproveIsrModal" onclick=approveisr_content('.$request_no->id.')>'.$row->request_id.'</a>';
+				}    
+
+				$sub_array[] = $row->action;
+
+				$data[] = $sub_array;
+			}
+
+			// Return JSON response
+			$response = array(
+				'draw'            => intval($this->input->post('draw')), 
+				'recordsTotal'    => $totalRecords,
+				'recordsFiltered' => $totalFilteredRecords,
+				'data'            => $data
+			);
+
+			echo json_encode($response);
+		}
+
+
 
 		public function ViewHeader($title) //displays the header
         {
@@ -435,6 +585,7 @@
             $title = 'Setup';
             $this->ViewHeader($title); // loads the header filtered by usertype   
             $this->load->view('Admin/Pending_request'); // loads the Users_view.php in views
+			$this->load->view('templates/footer',$data);
         }
 
         public function ViewApprovers()
@@ -2371,6 +2522,7 @@
             $this->ViewHeader($title); // loads the header filtered by usertype   
               
             $this->load->view('Admin/Deduct_view');
+			$this->load->view('templates/footer');
         }
 
         public function view_deduction_date()
@@ -2383,7 +2535,7 @@
             $dedDate = $this->input->post('ded_date');
             $emp_id = $this->input->post('emp_id');
 
-            $this->db3->select("*")
+            $this->db3->select("*, (ldg_debit - IFNULL(ldg_credit, 0)) as ldg_bal")
                 ->from('ebm_consolidated_ledger')
                 // ->join('pis.employee3 as staff', 'staff.emp_no = nav.staff_id')
                 // ->join('pis.employee3 as officer', 'officer.emp_id = nav.officer_incharge')
@@ -2422,7 +2574,7 @@
             $dedDate = $this->input->post('ded_date');
             $emp_id = $this->input->post('emp_id');
 
-            $this->db3->select("SUM(ldg_balance) as total_balance")
+            $this->db3->select("SUM(ldg_debit) as total_balance")
                 ->from('ebm_consolidated_ledger')
                 ->where('ldg_deduction_date', $dedDate)
                 ->where('ldg_hrmsid', $emp_id);

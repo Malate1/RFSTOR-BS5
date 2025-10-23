@@ -118,7 +118,7 @@
 
 		<?php 
 			$currentDate = date("m-d");
-			$birthday = "09-19";
+			$birthday = "10-13";
 			@$birthday1 = $this->session->bday;
 			//var_dump($birthday1);
 			// if($birthday == $currentDate AND $this->session->bday != "" AND $this->session->user_id == '1'){ 
@@ -934,7 +934,7 @@ if ($this->session->flashdata('SUCCESSMSG')) {
 
 <?php 
     $currentDate = date("m-d");
-    $birthday = "09-19";
+    $birthday = "10-13";
     @$birthday1 = $this->session->bday;
     //var_dump($birthday1);
     // if($birthday == $currentDate AND $this->session->bday != "" AND $this->session->user_id == '1'){  

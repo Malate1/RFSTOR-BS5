@@ -69,11 +69,11 @@
                     $stat1 .= $approvedetails->name;        
                 }
                 elseif($req->reqstatus == 'Cancelled') {
-                    $stat1 .= $canceldetails->name;
+                    $stat1 .= @$canceldetails->name ? : '';
                 }
 
                 elseif($req->reqstatus == 'Cancelled' AND $req->approvedby != '0') {
-                    $stat1 .= $canceldetails->name;
+                    $stat1 .= @$canceldetails->name ? : '';
                 }
                 else{
                    $stat1 .= '<span style=" align: center";><i class="fa fa-question-circle " aria-hidden="true" ></i></span>';

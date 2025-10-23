@@ -133,34 +133,71 @@
 <script >
   	$(document).ready(function() {
     //var table = $('table#dt-execute').removeAttr('width').DataTable({
-    var table = $("table#dt-logs").DataTable({
-        "destroy": true,
-        'serverSide': true,
-        'processing': true,
+    // var table = $("table#dt-logs").DataTable({
+    //     "destroy": true,
+    //     'serverSide': true,
+    //     'processing': true,
 		
-        "ajax": {
-            url: "<?php echo site_url('admin/reqlogs_list'); ?>",
-            type: "POST",
-        },
-		// language: {
-		// 	processing: "<img src='<?=base_url()?>assets/loader2.gif' width='200' height='200'>"
-		// },
+    //     "ajax": {
+    //         url: "<?php echo site_url('admin/reqlogs_list'); ?>",
+    //         type: "POST",
+    //     },
+	// 	// language: {
+	// 	// 	processing: "<img src='<?=base_url()?>assets/loader2.gif' width='200' height='200'>"
+	// 	// },
         
-        // buttons: [
-        //     'copy', 'csv', 'print'
-        // ],
-        "order": [ [ 0, 'desc' ]],
+    //     // buttons: [
+    //     //     'copy', 'csv', 'print'
+    //     // ],
+    //     "order": [ [ 0, 'desc' ]],
 
-        "columnDefs": [{
-            "targets": [1,3],
-            "orderable": false,   
-			},
+    //     "columnDefs": [{
+    //         "targets": [1,3],
+    //         "orderable": false,   
+	// 		},
 			
-			{   "searchable": false, 
-				"targets": [0,2] 
-			},
-        ]
-    });
+	// 		{   "searchable": false, 
+	// 			"targets": [0,2] 
+	// 		},
+    //     ]
+    // });
+
+	var item_tables = $('#dt-logs').DataTable({
+		"processing": true,
+		"serverSide": true,
+		"searching": true,
+		"ajax": {
+			"url": "<?php echo base_url(); ?>admin/reqlogs_list",
+			"type": "POST",
+			"data": function(d) {
+				d.start = d.start || 0; // Start index of the records
+				d.length = d.length || 10; // Number of records per page
+			}
+		},
+
+		"columns": [
+			{ data: null, render: function(data, type, row) { return row[0]; } }, // Date
+			{ data: null, render: function(data, type, row) { return row[1]; } }, // rtype
+			{ data: null, render: function(data, type, row) { return row[2]; } }, // Request ID (Clickable Link)
+			{ data: null, render: function(data, type, row) { return row[3]; } }  // Action
+		],
+
+		"order": [[0, 'desc']],
+
+		"columnDefs": [
+			{ "targets": [1], "orderable": false }
+		],
+
+		"paging": true,
+		"pagingType": "full_numbers",
+		"lengthMenu": [
+			[10, 25, 50, 1000],
+			[10, 25, 50, "Max"]
+		],
+		"pageLength": 10
+	});
+
+            
 });
 
 </script>

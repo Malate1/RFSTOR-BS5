@@ -194,6 +194,7 @@ class Employee extends CI_Controller {
 	{
 		$payload = $this->input->post(NULL,TRUE);
 		$users = $this->employee_model->get_users($payload);
+		
 		//$fetch_data = $this->blacklist_model->get_blacklist();
 		$data = [];
 
@@ -205,9 +206,18 @@ class Employee extends CI_Controller {
 			@$sect = $this->employee_model->sect_name($userdetails->bunit_code, $userdetails->company_code, $userdetails->dept_code, $userdetails->section_code);
 			$id = $user->user_id;
 
+			$profile = $this->employee_model->find_employee_name($user->emp_id);
+
+			// Profile pic logic
+			if($profile == '' || $user->emp_id == '03845-2015'){
+				$str = $userdetails->profile_pic;
+			}else{
+				$str = ltrim($profile->photo, '.');
+			}
+
 			$sub_array = [];
 			
-			$sub_array[] = '<a id="edit3-'.$id.'" class="action" style="color: inherit; cursor: pointer;">'.$user->name.'</a>';
+			$sub_array[] = '<img src="http://172.16.161.34:8080/hrms/' . $str.'" alt="avatar" class="rounded-circle" width="35"> &nbsp; <a id="edit3-'.$id.'" class="action" style="color: inherit; cursor: pointer;">'.$user->name.'</a>';
 			$sub_array[] = $user->username;
 			$sub_array[] = @$userdetails->position;
 			$sub_array[] = @$user->company;

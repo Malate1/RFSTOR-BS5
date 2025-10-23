@@ -178,8 +178,8 @@
 	 	public function find_employee($search)
 	 	{
 	 		$query = $this->db2->select('emp_id, name, emp_no')
-	 				->where('current_status', 'Active')
-	 				//->where_in('current_status', array('Active', 'End of Contract'))
+	 				// ->where('current_status', 'Active')
+	 				// ->where_in('current_status', array('Active', 'End of Contract'))
 	 				->group_start()
 	 					->like('emp_id', $search)
 	 					->or_like('emp_no', $search)

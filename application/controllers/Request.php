@@ -2939,8 +2939,9 @@
 
         public function approverfs_content() //displays RFS details 
         {
+			var_dump($_POST['ids']);
             $row = $this->Admin_Model->getReqRfsApprovebyRequest($_POST['ids']);
-            $group = $row->togroup;
+            $group = @$row->togroup;
             $data1 = $this->Admin_Model->getUserGroup();
             $data2 = $this->Admin_Model->getUserRfs();
             // $data3 = $this->Admin_Model->getUserRfsMode();
@@ -3196,8 +3197,8 @@
         public function approvetor_content() //displays TOR details 
         {
             $row = $this->Admin_Model->getReqTorApprovebyRequest($_POST['ids']);
-            //$group = $row->togroup;
-            // $data1 = $this->Admin_Model->getUserGroup();
+            $group = $row->togroup;
+            $data1 = $this->Admin_Model->getUserGroup();
             // $data2 = $this->Admin_Model->getUserTor();
             // $data3 = $this->Admin_Model->getUserRfsMode();
             $type = 'TOR';
@@ -3375,8 +3376,8 @@
         public function approveisr_content() //displays ISR details 
         {
             $row = $this->Admin_Model->getReqIsrApprovebyRequest($_POST['ids']);
-            //$group = $row->togroup;
-            // $data1 = $this->Admin_Model->getUserGroup();
+            $group = $row->togroup;
+            $data1 = $this->Admin_Model->getUserGroup();
             // $data2 = $this->Admin_Model->getUserTor();
             // $data3 = $this->Admin_Model->getUserRfsMode();
             $type = 'ISR';

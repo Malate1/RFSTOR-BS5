@@ -33,7 +33,7 @@ Date Downloaded: 12/09/2024 10:49:41 am !-->
              <div class="card mb-0">
                <div class="card-body">
                  <a href="index.html" class="text-nowrap logo-img text-center d-block mb-5 w-100">
-                   <img src="<?=base_url()?>assets/images/logos/dark.png" width="180" class="dark-logo" alt="Logo-Dark" />
+                   <!-- <img src="<?=base_url()?>assets/images/logos/dark.png" width="180" class="dark-logo" alt="Logo-Dark" /> -->
                    <img src="<?=base_url()?>assets/images/logos/dark.png" width="180" class="light-logo" alt="Logo-light" />
                  </a>
                 

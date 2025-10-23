@@ -60,7 +60,7 @@
                     $stat1 .= $executedetails->name;        
                 }
                 elseif($req->reqstatus == 'Cancelled') {
-                    $stat1 .= $canceldetails->name;
+                    $stat1 .= @$canceldetails->name;
                 }
 
                 elseif($req->reqstatus == 'Cancelled' AND $req->executedby != '0') {
