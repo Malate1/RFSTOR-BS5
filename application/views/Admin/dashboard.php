@@ -123,7 +123,7 @@
 			//var_dump($birthday1);
 			// if($birthday == $currentDate AND $this->session->bday != "" AND $this->session->user_id == '1'){ 
 			if(@$birthday1 == $currentDate){ 
-				// var_dump($birthday1);
+				// var_dump($birthday1); s
 			?>
 			<br>
 

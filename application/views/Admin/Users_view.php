@@ -294,283 +294,283 @@ body.dark-theme table.dataTable tbody tr {
 <script src="<?=base_url()?>assets/libs/jquery-ui/dist/jquery-ui.min.js"></script>
 
 <script>
-var $searchInput = $("input[name='search']");
+    var $searchInput = $("input[name='search']");
 
-if ($searchInput.length) {
-    $searchInput.autocomplete({
-        source: function(request, response) {
-            $.get("<?= site_url('employee/search'); ?>", {
-                query: request.term
-            }, function(data) {
-                data = JSON.parse(data);
-                response(data);
+    if ($searchInput.length) {
+        $searchInput.autocomplete({
+            source: function(request, response) {
+                $.get("<?= site_url('employee/search'); ?>", {
+                    query: request.term
+                }, function(data) {
+                    data = JSON.parse(data);
+                    response(data);
+                });
+            },
+
+        }).data("ui-autocomplete")._renderItem = function(ul, item) {
+            var listItem = $("<li>")
+                .append(
+                    $("<div data-effect='effect-scale'>").css("font-family", "Inter-Regular, sans-serif").html(
+                        `${item.id} - ${item.name} - ${item.emp_no} ${item.hasCheck ? '<span class="badge  bg-success-subtle text-success"><i class="fas fa-check"></i></span>' : ''}`
+                        )
+                );
+
+            listItem.click(function() {
+                var emp_id = item.id;
+                viewAddForm(emp_id);
+                return false;
             });
-        },
 
-    }).data("ui-autocomplete")._renderItem = function(ul, item) {
-        var listItem = $("<li>")
-            .append(
-                $("<div data-effect='effect-scale'>").css("font-family", "Inter-Regular, sans-serif").html(
-                    `${item.id} - ${item.name} - ${item.emp_no} ${item.hasCheck ? '<span class="badge  bg-success-subtle text-success"><i class="fas fa-check"></i></span>' : ''}`
-                    )
-            );
+            return listItem.appendTo(ul);
+        };
 
-        listItem.click(function() {
-            var emp_id = item.id;
-            viewAddForm(emp_id);
-            return false;
-        });
-
-        return listItem.appendTo(ul);
-    };
-
-    $("div.ui-helper-hidden-accessible[role='status']").hide();
-    $("div.ui-menu.ui-widget.ui-widget-content.ui-autocomplete.ui-front").hide();
-}
-$("form#add-user").submit(function(e) {
-    e.preventDefault();
-
-    // Enable disabled inputs temporarily
-    $(':disabled').each(function() {
-        $(this).removeAttr('disabled');
-    });
-
-    let formData = $(this).serialize();
-    //console.log(formData);
-    let tasks = $("input[name='tasks[]']:checked").length;
-    let groups = $("input[name='groups[]']:checked").length;
-    if (tasks == 0) {
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true,
-            icon: 'warning',
-            title: 'Please choose at least one task!',
-        });
-        return;
+        $("div.ui-helper-hidden-accessible[role='status']").hide();
+        $("div.ui-menu.ui-widget.ui-widget-content.ui-autocomplete.ui-front").hide();
     }
-    if (groups == 0) {
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1000,
-            timerProgressBar: true,
-            icon: 'warning',
-            title: 'Please choose at least one group!',
+    $("form#add-user").submit(function(e) {
+        e.preventDefault();
+
+        // Enable disabled inputs temporarily
+        $(':disabled').each(function() {
+            $(this).removeAttr('disabled');
         });
-        return;
-    }
 
-
-    $.ajax({
-        type: "POST",
-        url: "<?= site_url('store_user'); ?>",
-        data: formData,
-        success: function(data) {
-            if (trimfield(data) == 'User-exists') {
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    icon: 'warning',
-                    title: 'User already exist!',
-                });
-                $('div#addUserModal').modal('hide');
-            }
-            if (trimfield(data) == 'ok') {
-                Swal.fire({
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'User added successfully!',
-                });
-                $('div#addUserModal').modal('hide');
-                window.setTimeout(function() {
-                    location.reload()
-                }, 2000);
-            }
+        let formData = $(this).serialize();
+        //console.log(formData);
+        let tasks = $("input[name='tasks[]']:checked").length;
+        let groups = $("input[name='groups[]']:checked").length;
+        if (tasks == 0) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                icon: 'warning',
+                title: 'Please choose at least one task!',
+            });
+            return;
         }
-    });
+        if (groups == 0) {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                icon: 'warning',
+                title: 'Please choose at least one group!',
+            });
+            return;
+        }
 
-    // console.log(formData); // Log the formData value
-});
+
+        $.ajax({
+            type: "POST",
+            url: "<?= site_url('store_user'); ?>",
+            data: formData,
+            success: function(data) {
+                if (trimfield(data) == 'User-exists') {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                        icon: 'warning',
+                        title: 'User already exist!',
+                    });
+                    $('div#addUserModal').modal('hide');
+                }
+                if (trimfield(data) == 'ok') {
+                    Swal.fire({
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'User added successfully!',
+                    });
+                    $('div#addUserModal').modal('hide');
+                    window.setTimeout(function() {
+                        location.reload()
+                    }, 2000);
+                }
+            }
+        });
+
+        // console.log(formData); // Log the formData value
+    });
 </script>
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-    var table;
+        var table;
 
-    let usergroup = $('#usergroup').val();
-    viewUser(usergroup);
-
-    $('#usergroup').on('change', function() {
-        let usergroup = this.value;
+        let usergroup = $('#usergroup').val();
         viewUser(usergroup);
-    });
 
-    function viewUser(usergroup) {
-        var table = $('#dt-users').DataTable({
-            "ajax": {
-                "url": "<?php echo base_url('employee/user_list'); ?>",
-                "type": "POST",
-                "data": function(d) {
-                    return $.extend({}, d, {
-                        usergroup: usergroup
+        $('#usergroup').on('change', function() {
+            let usergroup = this.value;
+            viewUser(usergroup);
+        });
+
+        function viewUser(usergroup) {
+            var table = $('#dt-users').DataTable({
+                "ajax": {
+                    "url": "<?php echo base_url('employee/user_list'); ?>",
+                    "type": "POST",
+                    "data": function(d) {
+                        return $.extend({}, d, {
+                            usergroup: usergroup
+                        });
+                    }
+                },
+
+                "destroy": true,
+                'serverSide': true,
+                'stateSave': true,
+                'processing': true,
+                'lengthMenu': [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "Max"]
+                ],
+                'pageLength': 10,
+                'scrollCollapse': true,
+                'scrollY': '70vh',
+                "order": [
+                    [0, 'asc']
+                ],
+                "scrollX": true,
+                "fixedColumns": {
+                    "leftColumns": 1,
+                    "rightColumns": 2,
+                    "width": 200
+                },
+                "columnDefs": [{
+                    "targets": [5, 6, 7, 8, 2, 1],
+                    "orderable": false,
+                    "searchable": false,
+                    "className": "text-center",
+                }],
+                "order": [
+                    [0, 'asc']
+                ],
+            });
+
+            $('#dt-users').off('click', 'a.action').on('click', 'a.action', function() {
+                let [action, ids] = this.id.split('-');
+
+                if (!$(this).parents('tr').hasClass('selected')) {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).parents('tr').addClass('selected');
+                }
+
+                if (action == "edit") {
+                    // Prevent duplicate AJAX calls
+                    //if ($(this).data('processing')) return;
+                    //$(this).data('processing', true);
+
+                    var editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'), {
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+
+                    editUserModal.show();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= site_url('edituser_content'); ?>",
+                        data: {
+                            ids
+                        },
+                        success: function(data) {
+                            $("div.emp-details").show(); // Show the loader
+                            $("div#edituser_content").html(data); // Insert content into modal
+                            $(this).data('processing', false);
+                        },
+                        error: function() {
+                            $(this).data('processing', false);
+                        }
                     });
                 }
-            },
 
-            "destroy": true,
-            'serverSide': true,
-            'stateSave': true,
-            'processing': true,
-            'lengthMenu': [
-                [10, 25, 50, 100, -1],
-                [10, 25, 50, 100, "Max"]
-            ],
-            'pageLength': 10,
-            'scrollCollapse': true,
-            'scrollY': '70vh',
-            "order": [
-                [0, 'asc']
-            ],
-            "scrollX": true,
-            "fixedColumns": {
-                "leftColumns": 1,
-                "rightColumns": 2,
-                "width": 200
-            },
-            "columnDefs": [{
-                "targets": [5, 6, 7, 8, 2, 1],
-                "orderable": false,
-                "searchable": false,
-                "className": "text-center",
-            }],
-            "order": [
-                [0, 'asc']
-            ],
-        });
+                if (action == "edit2") {
+                    var editUserModal2 = new bootstrap.Modal(document.getElementById('editUserModal2'), {
+                        backdrop: 'static',
+                        keyboard: false
+                    });
 
-        $('#dt-users').off('click', 'a.action').on('click', 'a.action', function() {
-            let [action, ids] = this.id.split('-');
+                    editUserModal2.show();
 
-            if (!$(this).parents('tr').hasClass('selected')) {
-                table.$('tr.selected').removeClass('selected');
-                $(this).parents('tr').addClass('selected');
-            }
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= site_url('edituser_content2'); ?>",
+                        data: {
+                            ids
+                        },
+                        success: function(data) {
+                            $("div.emp-details").show(); // Show the loader
+                            $("div#edituser_content2").html(data); // Insert content into modal
+                        }
+                    });
+                }
 
-            if (action == "edit") {
-                // Prevent duplicate AJAX calls
-                //if ($(this).data('processing')) return;
-                //$(this).data('processing', true);
+                if (action == "edit3") {
+                    var editUserModal3 = new bootstrap.Modal(document.getElementById('editUserModal3'), {
+                        backdrop: 'static',
+                        keyboard: false
+                    });
 
-                var editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'), {
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                    editUserModal3.show();
 
-                editUserModal.show();
-
-                $.ajax({
-                    type: "POST",
-                    url: "<?= site_url('edituser_content'); ?>",
-                    data: {
-                        ids
-                    },
-                    success: function(data) {
-                        $("div.emp-details").show(); // Show the loader
-                        $("div#edituser_content").html(data); // Insert content into modal
-                        $(this).data('processing', false);
-                    },
-                    error: function() {
-                        $(this).data('processing', false);
-                    }
-                });
-            }
-
-            if (action == "edit2") {
-                var editUserModal2 = new bootstrap.Modal(document.getElementById('editUserModal2'), {
-                    backdrop: 'static',
-                    keyboard: false
-                });
-
-                editUserModal2.show();
-
-                $.ajax({
-                    type: "POST",
-                    url: "<?= site_url('edituser_content2'); ?>",
-                    data: {
-                        ids
-                    },
-                    success: function(data) {
-                        $("div.emp-details").show(); // Show the loader
-                        $("div#edituser_content2").html(data); // Insert content into modal
-                    }
-                });
-            }
-
-            if (action == "edit3") {
-                var editUserModal3 = new bootstrap.Modal(document.getElementById('editUserModal3'), {
-                    backdrop: 'static',
-                    keyboard: false
-                });
-
-                editUserModal3.show();
-
-                $.ajax({
-                    type: "POST",
-                    url: "<?= site_url('userTasks_content'); ?>",
-                    data: {
-                        ids
-                    },
-                    success: function(data) {
-                        $("div.emp-details").show(); // Show the loader
-                        $("div#userTasks_content").html(data); // Insert content into modal
-                    }
-                });
-            }
-        });
+                    $.ajax({
+                        type: "POST",
+                        url: "<?= site_url('userTasks_content'); ?>",
+                        data: {
+                            ids
+                        },
+                        success: function(data) {
+                            $("div.emp-details").show(); // Show the loader
+                            $("div#userTasks_content").html(data); // Insert content into modal
+                        }
+                    });
+                }
+            });
 
 
+        }
+
+
+    });
+
+    function trimfield(str) {
+        return str.replace(/^\s+|\s+$/g, '');
     }
 
-
-});
-
-function trimfield(str) {
-    return str.replace(/^\s+|\s+$/g, '');
-}
-
-function viewAddForm(emp_id) {
+    function viewAddForm(emp_id) {
 
 
 
-    // Initialize the modal
-    var editUserModal2 = new bootstrap.Modal(document.getElementById('addUserModal'), {
-        backdrop: 'static',
-        keyboard: false
-    });
+        // Initialize the modal
+        var editUserModal2 = new bootstrap.Modal(document.getElementById('addUserModal'), {
+            backdrop: 'static',
+            keyboard: false
+        });
 
-    // Show the modal
-    editUserModal2.show();
+        // Show the modal
+        editUserModal2.show();
 
-    $.ajax({
-        type: "POST",
-        url: "<?= site_url('adduser_content'); ?>",
-        data: {
-            emp_id
-        },
-        success: function(data) {
+        $.ajax({
+            type: "POST",
+            url: "<?= site_url('adduser_content'); ?>",
+            data: {
+                emp_id
+            },
+            success: function(data) {
 
-            $("div#adduser_content").html(data);
-        }
-    });
-}
+                $("div#adduser_content").html(data);
+            }
+        });
+    }
 </script>

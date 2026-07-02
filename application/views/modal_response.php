@@ -14,13 +14,13 @@
 					@$profile3 = $this->employee_model->find_an_employee($emp->emp_id);
 
 					@$inputteddob  = !empty($profile->birthdate) ? date("Y-m-d", strtotime($profile->birthdate)) : null;
-					@$inputteddob1 = !empty($profile2->date_hired) ? date("Y-m", strtotime($profile2->date_hired)) : null;
+					@$inputteddob1 = !empty($profile2->date_hired) ? date("Y-m-d", strtotime($profile2->date_hired)) : null;
 					@$inputteddob2 = !empty($profile3->eocdate) && $profile3->eocdate != "0000-00-00" 
-										? date("Y-m", strtotime($profile3->eocdate)) 
+										? date("Y-m-d", strtotime($profile3->eocdate)) 
 										: null;
 
 					$currentDate = new DateTime();
-
+					
 					// AGE
 					$age = null;
 					if ($inputteddob) {
@@ -28,26 +28,38 @@
 						$age = $currentDate->diff($DOB)->y;
 					}
 
+					
 					// SERVICE INTERVAL
 					if ($inputteddob1) {
 						$DOB1 = new DateTime($inputteddob1);
 
-						if ($inputteddob2) {
+						if ($inputteddob2 && $profile3->current_status != 'Active') {
 							$DOB2 = new DateTime($inputteddob2);
 						} else {
-							// If EOC is missing or "0000-00-00", use CURRENT DATE
+							// If EOC is missing or employee is Active, use current date
 							$DOB2 = $currentDate;
 						}
 
 						$interval = $DOB2->diff($DOB1);
-						$year1    = $interval->y;
-						$month1   = $interval->m;
+
+						$year1  = $interval->y;
+						$month1 = $interval->m;
+						$day1   = $interval->d;   // Days
 					} else {
 						$year1  = 0;
 						$month1 = 0;
+						$day1   = 0;
 					}
 
-				        
+				        // echo "Start: " . $DOB1->format('Y-m-d') . "<br>";
+						// echo "End: " . $DOB2->format('Y-m-d') . "<br>";
+
+						// $interval = $DOB2->diff($DOB1);
+
+						// echo "<pre>";
+						// print_r($interval);
+						// echo "</pre>";
+						// exit;
 
 				        //var_dump($DOB1);
 						//$exp = $currentDate->diff($EXP)->y;
@@ -109,16 +121,28 @@
 							  </tr>
 
 							  <tr>
+							    <td style="font-weight: bold;">Status:</td>
+							    <td style="padding-left: 10px"><?php echo $profile3->current_status ?> - <?php echo $profile3->sub_status ?></td>
+							    
+							  </tr>
+
+							  
+							  <tr>
 							    <td style="font-weight: bold;">Start Date:</td>
 							    <td style="padding-left: 10px"><?php echo date("M. d, Y",strtotime(@$profile2->date_hired)) ?></td>
 							    
 							  </tr>
-
-							  <tr>
-							    <td style="font-weight: bold;">Years Experience:</td>
-							    <td style="padding-left: 10px"><?php echo @$year1 ?>&nbsp; year(s) & <?php echo @$month1 ?>&nbsp; month(s)</td>
-							    
-							  </tr>
+							
+							<?php if ((!empty($profile3->eocdate) && $profile3->eocdate != "0000-00-00") || $profile3->current_status == 'Active') { ?>
+							<tr>
+								<td style="font-weight: bold;">Years Experience:</td>
+								<td style="padding-left: 10px">
+									<?php echo $year1; ?> year(s),
+									<?php echo $month1; ?> month(s) &
+									<?php echo $day1; ?> day(s)
+								</td>
+							</tr>
+							<?php } ?>
 							</table>
 		                </div>
 		            </div>
