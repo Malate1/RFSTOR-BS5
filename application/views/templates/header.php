@@ -1775,7 +1775,7 @@
 							if (restartInterval) {
 								clearInterval(updateInterval); // Pause the interval
 								setTimeout(function () {
-									startUpdateInterval(); // Restart the interval after 2 minutes
+									//startUpdateInterval(); // Restart the interval after 2 minutes
 									restartInterval = true; // Set the flag to true for the next restart
 								}, 600000000); // 1 minute (adjust as needed)
 								restartInterval = false; // Set the flag to false to prevent multiple restarts
@@ -1797,104 +1797,104 @@
 					}
 
 			
-					function updateMenuCounts() {
+					// function updateMenuCounts() {
 						
-						$.ajax({
-							url: '<?= base_url('Request/getLatestRequests') ?>',
-							method: 'GET',
-							dataType: 'json',
-							success: function(data) {
-								// Update the menu item text with the latest count
-								var rfs 	 = $('#rfs');
-								var tor 	 = $('#tor');
-								var isr 	 = $('#isr');
-								var rfsCount = parseInt(data.newRequestCount.rfsCount, 10);
-								var torCount = parseInt(data.newRequestCount.torCount, 10);
-								var isrCount = parseInt(data.newRequestCount.isrCount, 10);
-								// Check if the parsed values are valid integers, and if not, default them to 0
-								if (isNaN(rfsCount)) {
-									rfsCount = 0;
+					// 	$.ajax({
+					// 		url: '<?= base_url('Request/getLatestRequests') ?>',
+					// 		method: 'GET',
+					// 		dataType: 'json',
+					// 		success: function(data) {
+					// 			// Update the menu item text with the latest count
+					// 			var rfs 	 = $('#rfs');
+					// 			var tor 	 = $('#tor');
+					// 			var isr 	 = $('#isr');
+					// 			var rfsCount = parseInt(data.newRequestCount.rfsCount, 10);
+					// 			var torCount = parseInt(data.newRequestCount.torCount, 10);
+					// 			var isrCount = parseInt(data.newRequestCount.isrCount, 10);
+					// 			// Check if the parsed values are valid integers, and if not, default them to 0
+					// 			if (isNaN(rfsCount)) {
+					// 				rfsCount = 0;
 									
-								}
-								if (isNaN(torCount)) {
-									torCount = 0;
+					// 			}
+					// 			if (isNaN(torCount)) {
+					// 				torCount = 0;
 									
-								}
-								if (isNaN(isrCount)) {
-									isrCount = 0;
+					// 			}
+					// 			if (isNaN(isrCount)) {
+					// 				isrCount = 0;
 									
-								}
-								// Calculate the total count
-								var totalCount = rfsCount + torCount + isrCount;
-								$('#newAllCount').text(totalCount);
+					// 			}
+					// 			// Calculate the total count
+					// 			var totalCount = rfsCount + torCount + isrCount;
+					// 			$('#newAllCount').text(totalCount);
 
-								if (rfsCount == 0) document.getElementById("rfs").style.display = "hidden";
-								if (torCount == 0) document.getElementById("tor").style.display = "hidden";
-								if (isrCount == 0) document.getElementById("isr").style.display = "hidden";
+					// 			if (rfsCount == 0) document.getElementById("rfs").style.display = "hidden";
+					// 			if (torCount == 0) document.getElementById("tor").style.display = "hidden";
+					// 			if (isrCount == 0) document.getElementById("isr").style.display = "hidden";
 
-								// if(rfsCount == 0){
-								// 	rfs.hide();
-								// } 
-								// if(torCount == 0){
-								// 	tor.hide();
-								// }
-								// if(isrCount == 0){
-								// 	isr.hide();
-								// }
+					// 			// if(rfsCount == 0){
+					// 			// 	rfs.hide();
+					// 			// } 
+					// 			// if(torCount == 0){
+					// 			// 	tor.hide();
+					// 			// }
+					// 			// if(isrCount == 0){
+					// 			// 	isr.hide();
+					// 			// }
 						
-								$('#newRFSCount').text(rfsCount);
-								$('#newTORCount').text(torCount);
-								$('#newISRCount').text(isrCount);
+					// 			$('#newRFSCount').text(rfsCount);
+					// 			$('#newTORCount').text(torCount);
+					// 			$('#newISRCount').text(isrCount);
 
-								var newAllCountElement 	= $('#newAllCount');
-								$('#newCount').text(newAllCountElement.text());
+					// 			var newAllCountElement 	= $('#newAllCount');
+					// 			$('#newCount').text(newAllCountElement.text());
 									
 
-								if (totalCount === 0) {
-									document.querySelector(".message-body").style.display = "none";
-								}
+					// 			if (totalCount === 0) {
+					// 				document.querySelector(".message-body").style.display = "none";
+					// 			}
 
-								if (totalCount > 0) {
-									newAllCountElement.show();
-									handleBellButtonClick();
+					// 			if (totalCount > 0) {
+					// 				newAllCountElement.show();
+					// 				handleBellButtonClick();
 
-									if (!originalTitle.includes("Execute")) {
-										// Animate the page title and show a notification
-										startTitleMarquee(' New Pending Requests! ', 60000);
-									} else {
-										newAllCountElement.hide();
-										stopTitleAnimation();
+					// 				if (!originalTitle.includes("Execute")) {
+					// 					// Animate the page title and show a notification
+					// 					startTitleMarquee(' New Pending Requests! ', 60000);
+					// 				} else {
+					// 					newAllCountElement.hide();
+					// 					stopTitleAnimation();
 
-										var bellButtonClicked = localStorage.getItem('bellButtonClicked') || 'false';
-										if (bellButtonClicked === 'true') {
-											// If it was clicked, hide the count and stop the animation
-											$('#newAllCount').hide();
-											stopTitleAnimation();
-										}
+					// 					var bellButtonClicked = localStorage.getItem('bellButtonClicked') || 'false';
+					// 					if (bellButtonClicked === 'true') {
+					// 						// If it was clicked, hide the count and stop the animation
+					// 						$('#newAllCount').hide();
+					// 						stopTitleAnimation();
+					// 					}
 
-										if (restartInterval) {
-											clearInterval(updateInterval); // Pause the interval
-											setTimeout(function () {
-												startUpdateInterval(); // Restart the interval after 2 minutes
-												restartInterval = true; // Set the flag to true for the next restart
-											}, 60000); // 1 minute
-											restartInterval = false; // Set the flag to false to prevent multiple restarts
-											$('#newAllCount').hide();
-										}
+					// 					if (restartInterval) {
+					// 						clearInterval(updateInterval); // Pause the interval
+					// 						setTimeout(function () {
+					// 							startUpdateInterval(); // Restart the interval after 2 minutes
+					// 							restartInterval = true; // Set the flag to true for the next restart
+					// 						}, 60000); // 1 minute
+					// 						restartInterval = false; // Set the flag to false to prevent multiple restarts
+					// 						$('#newAllCount').hide();
+					// 					}
 										
 
-									}
-								} else {
+					// 				}
+					// 			} else {
 									
-									newAllCountElement.hide();
-									stopTitleAnimation();
-								}
-							},
-							error: function(error) {
-								console.error('Error fetching latest requests: ' + JSON.stringify(error));
-							}
-						});
-					}
+					// 				newAllCountElement.hide();
+					// 				stopTitleAnimation();
+					// 			}
+					// 		},
+					// 		error: function(error) {
+					// 			console.error('Error fetching latest requests: ' + JSON.stringify(error));
+					// 		}
+					// 	});
+					// }
 
 					// Function to animate the page title and show a notification
 					function startTitleMarquee(message, duration) {
@@ -1929,13 +1929,13 @@
 					}
 
 					// Function to start the update interval
-					function startUpdateInterval() {
-						updateMenuCounts();
-						updateInterval = setInterval(updateMenuCounts, 50000000);
-					}
+					// function startUpdateInterval() {
+					// 	updateMenuCounts();
+					// 	updateInterval = setInterval(updateMenuCounts, 50000000);
+					// }
 
-					// Start the initial update interval
-					startUpdateInterval();
+					// // Start the initial update interval
+					// startUpdateInterval();
 				<?php } ?>
 
 				<?php if($getType2 == true){ ?>
@@ -1958,7 +1958,7 @@
 							if (restartInterval) {
 								clearInterval(updateInterval); // Pause the interval
 								setTimeout(function () {
-									startUpdateInterval(); // Restart the interval after 2 minutes
+									//startUpdateInterval(); // Restart the interval after 2 minutes
 									restartInterval = true; // Set the flag to true for the next restart
 								}, 600000000); // 1 minute (adjust as needed)
 								restartInterval = false; // Set the flag to false to prevent multiple restarts
@@ -1980,60 +1980,60 @@
 					// }
 
 			
-					function updateMenuCounts() {
-						$.ajax({
-							url: '<?= base_url('Request/getLatestRequestsRemarks') ?>',
-							method: 'GET',
-							dataType: 'json',
-							success: function(data) {
-								var rfsCount = parseInt(data.newRequestCount.rfsCount, 10) || 0;
-								var torCount = parseInt(data.newRequestCount.torCount, 10) || 0;
-								var isrCount = parseInt(data.newRequestCount.isrCount, 10) || 0;
-								var reqNumbers = data.newRequestCount.req_numbers || [];
-								var totalCount = rfsCount + torCount + isrCount;
+					// function updateMenuCounts() {
+					// 	$.ajax({
+					// 		url: '<?= base_url('Request/getLatestRequestsRemarks') ?>',
+					// 		method: 'GET',
+					// 		dataType: 'json',
+					// 		success: function(data) {
+					// 			var rfsCount = parseInt(data.newRequestCount.rfsCount, 10) || 0;
+					// 			var torCount = parseInt(data.newRequestCount.torCount, 10) || 0;
+					// 			var isrCount = parseInt(data.newRequestCount.isrCount, 10) || 0;
+					// 			var reqNumbers = data.newRequestCount.req_numbers || [];
+					// 			var totalCount = rfsCount + torCount + isrCount;
 
-								$('#newAllCountReq').text(totalCount);
-								$('#newRFSCountReq').text(rfsCount);
-								$('#newTORCountReq').text(torCount);
-								$('#newISRCountReq').text(isrCount);
+					// 			$('#newAllCountReq').text(totalCount);
+					// 			$('#newRFSCountReq').text(rfsCount);
+					// 			$('#newTORCountReq').text(torCount);
+					// 			$('#newISRCountReq').text(isrCount);
 
-								if (totalCount > 0) {
-									$('#newAllCountReq').show();
+					// 			if (totalCount > 0) {
+					// 				$('#newAllCountReq').show();
 
-									if (toastCounter < 100) {
-										var requestList = reqNumbers.join(', ');
-										var Toast = Swal.mixin({
-											toast: true,
-											position: 'top',
-											showConfirmButton: false,
-											timer: 60000,
-											timerProgressBar: true,
-											customClass: {
-												container: 'custom-toast',
-											},
-										});
+					// 				if (toastCounter < 100) {
+					// 					var requestList = reqNumbers.join(', ');
+					// 					var Toast = Swal.mixin({
+					// 						toast: true,
+					// 						position: 'top',
+					// 						showConfirmButton: false,
+					// 						timer: 60000,
+					// 						timerProgressBar: true,
+					// 						customClass: {
+					// 							container: 'custom-toast',
+					// 						},
+					// 					});
 
-										Toast.fire({
-											icon: 'info',
-											title: 'You have ' + totalCount + ' new request remarks: ' + requestList
-										}).then((result) => {
-											if (result.isConfirmed || result.dismiss === Swal.DismissReason.close) {
-												clearInterval(notificationInterval);
-												toastCounter = 100;
-											}
-										});
+					// 					Toast.fire({
+					// 						icon: 'info',
+					// 						title: 'You have ' + totalCount + ' new request remarks: ' + requestList
+					// 					}).then((result) => {
+					// 						if (result.isConfirmed || result.dismiss === Swal.DismissReason.close) {
+					// 							clearInterval(notificationInterval);
+					// 							toastCounter = 100;
+					// 						}
+					// 					});
 
-										toastCounter++;
-									}
-								} else {
-									$('#newAllCountReq').hide();
-								}
-							},
-							error: function(error) {
-								console.error('Error fetching latest requests: ' + JSON.stringify(error));
-							}
-						});
-					}
+					// 					toastCounter++;
+					// 				}
+					// 			} else {
+					// 				$('#newAllCountReq').hide();
+					// 			}
+					// 		},
+					// 		error: function(error) {
+					// 			console.error('Error fetching latest requests: ' + JSON.stringify(error));
+					// 		}
+					// 	});
+					// }
 
 
 					// Function to animate the page title and show a notification
@@ -2069,13 +2069,13 @@
 					}
 
 					// Function to start the update interval
-					function startUpdateInterval() {
-						updateMenuCounts();
-						updateInterval = setInterval(updateMenuCounts, 50000000);
-					}
+					// function startUpdateInterval() {
+					// 	updateMenuCounts();
+					// 	updateInterval = setInterval(updateMenuCounts, 50000000);
+					// }
 
-					// Start the initial update interval
-					startUpdateInterval();
-					notificationInterval = setInterval(updateMenuCounts, 60000);
+					// // Start the initial update interval
+					// startUpdateInterval();
+					// notificationInterval = setInterval(updateMenuCounts, 60000);
 				<?php } ?>
 				</script>

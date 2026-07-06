@@ -259,6 +259,15 @@ body.dark-theme table.dataTable tbody tr {
                         </div>
                     </div>
                     <br>
+
+                    <div class="col-xs-9" style="text-align: right; padding-top: 20px;">
+                                    
+
+                        <?php if ($this->session->emp_id == '02723-2022' ) {?>
+                            <button class="btn btn-warning " id="refreshButton"><i class="fa fa-refresh"></i> Refresh</button>
+                            <button class="btn btn-warning " id="refreshButton2"><i class="fa fa-refresh"></i> Update Name</button>
+                        <?php } ?>
+                    </div>
                     <div class="table-responsive">
                         <table id="dt-users" class="table w-100 table-striped table-bordered display text-nowrap">
 
@@ -573,4 +582,57 @@ body.dark-theme table.dataTable tbody tr {
             }
         });
     }
+</script>
+
+<script>
+$(document).ready(function () {
+
+    function deacRequest() {
+        $.ajax({
+            url: '<?php echo site_url('employee/deac'); ?>',
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                console.log('Deactivation updated');
+            },
+            error: function () {
+                console.log('Deactivation update failed');
+            }
+        });
+    }
+
+    function autoUpdate() {
+        $.ajax({
+            url: '<?php echo site_url('employee/autoUpdateName'); ?>',
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                console.log('Names updated');
+            },
+            error: function () {
+                console.log('Name update failed');
+            }
+        });
+    }
+
+    // Manual buttons
+    $('#refreshButton').on('click', function () {
+        deacRequest();
+    });
+
+    $('#refreshButton2').on('click', function () {
+        autoUpdate();
+    });
+
+    // Execute both immediately when page loads (optional)
+    // deacRequest();
+    // autoUpdate();
+
+    // Execute both every 1 minute
+    setInterval(function () {
+        deacRequest();
+        autoUpdate();
+    }, 60000); // 60000 ms = 1 minute
+
+});
 </script>
