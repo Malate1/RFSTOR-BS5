@@ -109,6 +109,12 @@
 							  </tr>
 
 							  <tr>
+							    <td style="font-weight: bold;">Religion:</td>
+							    <td style="padding-left: 10px"><?php echo @$profile->religion ?></td>
+							    
+							  </tr>
+
+							  <tr>
 							    <td style="font-weight: bold;">School:</td>
 							    <td style="padding-left: 10px"><?php echo @$profile->school ?></td>
 							    

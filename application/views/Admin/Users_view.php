@@ -629,10 +629,10 @@ $(document).ready(function () {
     // autoUpdate();
 
     // Execute both every 1 minute
-    setInterval(function () {
-        deacRequest();
-        autoUpdate();
-    }, 60000); // 60000 ms = 1 minute
+    // setInterval(function () {
+    //     deacRequest();
+    //     autoUpdate();
+    // }, 60000); // 60000 ms = 1 minute
 
 });
 </script>
