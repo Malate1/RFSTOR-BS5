@@ -137,41 +137,90 @@
 	        return $query->num_rows();
 	    }
 
-	    public function autoDeactivateResigned() {
-		    $users2 = $this->db->get('users2')->result();
+	    // public function autoDeactivateResigned() {
+		//     $users2 = $this->db->get('users2')->result();
 
-		    foreach ($users2 as $user) {
-		        $this->db2->where('emp_id', $user->emp_id);
-		        $this->db2->where_not_in('current_status', ['Active']);
-		        $users = $this->db2->get('employee3')->result();
+		//     foreach ($users2 as $user) {
+		//         $this->db2->where('emp_id', $user->emp_id);
+		//         $this->db2->where_not_in('current_status', ['Active']);
+		//         $users = $this->db2->get('employee3')->result();
 
-		        foreach ($users as $user) {
-		            $status = '0';
+		//         foreach ($users as $user) {
+		//             $status = '0';
 
-		            $this->db->where('emp_id', $user->emp_id);
-		            $this->db->update('users2', array('status' => $status));
-		        }
-		    }
+		//             $this->db->where('emp_id', $user->emp_id);
+		//             $this->db->update('users2', array('status' => $status));
+		//         }
+		//     }
+		// }
+
+
+		public function autoDeactivateResigned()
+		{
+			$deactivatedUsers = array();
+
+			$users2 = $this->db->get('users2')->result();
+
+			foreach ($users2 as $user2) {
+
+				$this->db2->where('emp_id', $user2->emp_id);
+				$this->db2->where_not_in('current_status', array('Active'));
+				$employees = $this->db2->get('employee3')->result();
+
+				foreach ($employees as $employee) {
+
+					// Only deactivate if currently active
+					if ($user2->status != '0') {
+
+						$this->db->where('emp_id', $employee->emp_id);
+						$this->db->update('users2', array(
+							'status' => '0'
+						));
+
+						$deactivatedUsers[] = array(
+							'emp_id'         => $employee->emp_id,
+							'name'           => $user2->name,
+							'current_status' => $employee->current_status
+						);
+					}
+				}
+			}
+
+			return $deactivatedUsers;
 		}
 
+		public function autoUpdateName()
+		{
+			$updatedUsers = array();
 
-		public function autoUpdateName() {
-		    $users2 = $this->db->get('users2')->result();
+			$users2 = $this->db->get('users2')->result();
 
-		    foreach ($users2 as $user) {
-		        $this->db2->where('emp_id', $user->emp_id);
-		        $this->db2->where('current_status', 'Active');
-		        $users = $this->db2->get('employee3')->result();
+			foreach ($users2 as $user) {
 
-		        foreach ($users as $emp) {
-		            // Check if the names don't match
-		            if ($user->name != $emp->name) {
-		                // Update the name in users2 with the name from employee3
-		                $this->db->where('emp_id', $user->emp_id);
-		                $this->db->update('users2', array('name' => $emp->name));
-		            }
-		        }
-		    }
+				$this->db2->where('emp_id', $user->emp_id);
+				$this->db2->where('current_status', 'Active');
+				$users = $this->db2->get('employee3')->result();
+
+				foreach ($users as $emp) {
+
+					if ($user->name != $emp->name) {
+
+						$this->db->where('emp_id', $user->emp_id);
+						$this->db->update('users2', array(
+							'name' => $emp->name
+						));
+
+						// Save information about the update
+						$updatedUsers[] = array(
+							'emp_id'   => $user->emp_id,
+							'old_name' => $user->name,
+							'new_name' => $emp->name
+						);
+					}
+				}
+			}
+
+			return $updatedUsers;
 		}
 
 

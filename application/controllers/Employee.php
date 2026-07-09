@@ -127,25 +127,35 @@ class Employee extends CI_Controller {
 		// echo json_encode(['status' => 200, 'message' => 'User successfully added.']);
 	}
 
-	public function autoDeactivateResigned() {
-        // Perform the cancellation logic
-        $this->employee_model->autoDeactivateResigned();
-        // You can also pass any necessary data or parameters to the model method if required
+	// public function autoDeactivateResigned() {
+        
+    //     $this->employee_model->autoDeactivateResigned();
+        
+    //     $response = array('status' => 'success', 'message' => 'Success.');
+    //     echo json_encode($response);
+    // }
 
-        // Return a response (optional)
-        $response = array('status' => 'success', 'message' => 'Success.');
-        echo json_encode($response);
-    }
+	public function autoDeactivateResigned()
+	{
+		$deactivatedUsers = $this->employee_model->autoDeactivateResigned();
 
-    public function autoUpdateName() {
-        // Perform the cancellation logic
-        $this->employee_model->autoUpdateName();
-        // You can also pass any necessary data or parameters to the model method if required
+		echo json_encode(array(
+			'status'      => 'success',
+			'deactivated' => count($deactivatedUsers),
+			'users'       => $deactivatedUsers
+		));
+	}
 
-        // Return a response (optional)
-        $response = array('status' => 'success', 'message' => 'Success.');
-        echo json_encode($response);
-    }
+	public function autoUpdateName()
+	{
+		$updatedUsers = $this->employee_model->autoUpdateName();
+
+		echo json_encode(array(
+			'status'  => 'success',
+			'updated' => count($updatedUsers),
+			'users'   => $updatedUsers
+		));
+	}
 
 	public function store_cebu() //passing data to model for adding user details
 	{

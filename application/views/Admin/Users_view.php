@@ -584,7 +584,7 @@ body.dark-theme table.dataTable tbody tr {
     }
 </script>
 
-<script>
+<!-- <script>
 $(document).ready(function () {
 
     function deacRequest() {
@@ -625,14 +625,154 @@ $(document).ready(function () {
     });
 
     // Execute both immediately when page loads (optional)
-    // deacRequest();
-    // autoUpdate();
+    deacRequest();
+    autoUpdate();
 
     // Execute both every 1 minute
     // setInterval(function () {
     //     deacRequest();
     //     autoUpdate();
     // }, 60000); // 60000 ms = 1 minute
+
+});
+</script> -->
+
+<script>
+$(document).ready(function () {
+
+    function deacRequest() {
+        return $.ajax({
+            url: '<?php echo site_url('employee/deac'); ?>',
+            type: 'POST',
+            dataType: 'json'
+        });
+    }
+
+    function autoUpdate() {
+        return $.ajax({
+            url: '<?php echo site_url('employee/autoUpdateName'); ?>',
+            type: 'POST',
+            dataType: 'json'
+        });
+    }
+
+    function runRefresh() {
+
+        Swal.fire({
+            title: 'Please wait...',
+            html: 'Updating employee records...',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        deacRequest()
+            // .then(function () {
+            //     return autoUpdate();
+            // })
+            .done(function(response) {
+
+                let html = '<b>' + response.deactivated + '</b> employee(s) deactivated.<br><br>';
+
+                if (response.deactivated > 0) {
+
+                    html += '<div style="text-align:left;max-height:250px;overflow-y:auto;">';
+
+                    response.users.forEach(function(user) {
+                        html +=
+                            '<b>' + user.emp_id + '</b> - ' +
+                            user.name +
+                            '<br>Status: <b>' + user.current_status + '</b><br><br>';
+                    });
+
+                    html += '</div>';
+
+                } else {
+
+                    html += 'No employees needed to be deactivated.';
+
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Completed',
+                    html: html,
+                    width: 700
+                });
+
+            })
+            .fail(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while updating employee records.'
+                });
+            });
+    }
+
+    // Manual button
+    $('#refreshButton').click(runRefresh);
+
+    // Optional: Update Name button only
+    $('#refreshButton2').click(function () {
+
+        Swal.fire({
+            title: 'Please wait...',
+            html: 'Updating employee names...',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        autoUpdate()
+            .done(function(response) {
+
+                let html = '<b>' + response.updated + '</b> employee(s) updated.<br><br>';
+
+                if (response.updated > 0) {
+                    html += '<div style="text-align:left;max-height:250px;overflow-y:auto;">';
+
+                    response.users.forEach(function(user) {
+                        html +=
+                            '<b>' + user.emp_id + '</b><br>' +
+                            user.old_name +
+                            ' <i class="fa fa-arrow-right"></i> ' +
+                            user.new_name +
+                            '<br><br>';
+                    });
+
+                    html += '</div>';
+                } else {
+                    html += 'No employee names needed updating.';
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Completed',
+                    html: html,
+                    width: 700
+                });
+
+            })
+            .fail(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update employee names.'
+                });
+            });
+
+    });
+
+    // Automatically run on page load
+    // runRefresh();
+
+    // Automatically every minute
+    // setInterval(runRefresh, 60000);
 
 });
 </script>
