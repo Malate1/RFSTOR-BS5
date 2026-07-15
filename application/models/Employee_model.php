@@ -223,6 +223,146 @@
 			return $updatedUsers;
 		}
 
+		public function autoUpdateBus()
+		{
+			$updatedBus = array();
+
+			$business_unit = $this->db->get('business_unit')->result();
+
+			foreach ($business_unit as $bu) {
+
+				$this->db2->where('bcode', $bu->bcode);
+				$this->db2->where('status', 'Active');
+				$bus = $this->db2->get('locate_business_unit')->result();
+
+				foreach ($bus as $loc_bu) {
+
+					if ($bu->bcode != $loc_bu->bcode) {
+
+						$this->db->where('bcode', $bu->bcode);
+						$this->db->update('business_unit', array(
+							'name' => $loc_bu->name
+						));
+
+						// Save information about the update
+						$updatedBus[] = array(
+							'bcode'   => $bu->bcode,
+							'old_name' => $bu->business_unit,
+							'new_name' => $loc_bu->business_unit
+						);
+					}
+				}
+			}
+
+			return $updatedBus;
+		}
+
+		public function autoUpdateBu1()
+		{
+			$updatedBus = array();
+
+			$business_unit = $this->db->get('business_unit')->result();
+
+			foreach ($business_unit as $bu) {
+
+				$this->db2->where('bcode', $bu->bcode);
+				$this->db2->where('status', 'Active');
+				$bus = $this->db2->get('locate_business_unit')->result();
+
+				foreach ($bus as $loc_bu) {
+
+					// Compare the names instead of the bcode
+					if (trim($bu->business_unit) != trim($loc_bu->business_unit)) {
+
+						// Just collect the changes (no update)
+						$updatedBus[] = array(
+							'bcode'    => $bu->bcode,
+							'old_name' => $bu->business_unit,
+							'new_name' => $loc_bu->business_unit
+						);
+					}
+				}
+			}
+
+			return $updatedBus;
+		}
+
+		public function autoUpdateBu()
+		{
+			$changes = array(
+				'updated' => array(),
+				'new'     => array()
+			);
+
+			// Get existing bcodes from local database
+			$existing = $this->db
+				->select('bcode, business_unit')
+				->get('business_unit')
+				->result_array();
+
+			$existingBcodes = array_column($existing, 'bcode');
+			$existingNames = array_column($existing, 'business_unit', 'bcode');
+
+			// Get active business units from db2
+			$this->db2->where('status', 'Active');
+			$locate_bus = $this->db2->get('locate_business_unit')->result();
+
+			foreach ($locate_bus as $loc_bu) {
+				if (!in_array($loc_bu->bcode, $existingBcodes)) {
+					// New business unit
+					$changes['new'][] = array(
+						'bcode'         => $loc_bu->bcode,
+						'business_unit' => $loc_bu->business_unit,
+						'bunit_code'    => $loc_bu->bunit_code,
+						'status'        => $loc_bu->status,
+						'company_code'  => $loc_bu->company_code,
+						'acroname'      => $loc_bu->acroname
+					);
+
+					
+				} else {
+					// Check for updates
+					if (trim($existingNames[$loc_bu->bcode]) != trim($loc_bu->business_unit)) {
+						$changes['updated'][] = array(
+							'bcode'    => $loc_bu->bcode,
+							'old_name' => $existingNames[$loc_bu->bcode],
+							'new_name' => $loc_bu->business_unit
+						);
+					}
+				}
+			}
+
+			
+			// Perform the actual insert for new business units
+			$maxId = $this->db->select_max('id')
+                  ->get('business_unit')
+                  ->row()
+                  ->id;
+
+			$nextId = ($maxId) ? $maxId + 1 : 1;
+			foreach ($changes['new'] as $new_bu) {
+
+				$data = array(
+					'id'            => $nextId++,
+					'bcode'         => $new_bu['bcode'],
+					'business_unit' => $new_bu['business_unit'],
+					'bunit_code'    => $new_bu['bunit_code'],
+					'status'        => $new_bu['status'],
+					'company_code'  => $new_bu['company_code'],
+					'acroname'      => $new_bu['acroname'],
+				);
+
+				$this->db->insert('business_unit', $data);
+			}
+
+			foreach ($changes['updated'] as $update_bu) {
+				$this->db->where('bcode', $update_bu['bcode']);
+				$this->db->update('business_unit', array('business_unit' => $update_bu['new_name']));
+			}
+
+			return $changes;
+		}
+
 
 	 	public function find_employee($search)
 	 	{

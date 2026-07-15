@@ -157,6 +157,19 @@ class Employee extends CI_Controller {
 		));
 	}
 
+	public function autoUpdateBu()
+	{
+		$changes = $this->employee_model->autoUpdateBu();
+
+		echo json_encode(array(
+			'status'          => 'success',
+			'updated_count'   => count($changes['updated']),
+			'new_count'       => count($changes['new']),
+			'updated'         => $changes['updated'],
+			'new'             => $changes['new']
+		));
+	}
+
 	public function store_cebu() //passing data to model for adding user details
 	{
 		$data = $this->input->post(NULL, TRUE);

@@ -182,6 +182,10 @@
     
         <div class="card border-top border-primary">
             <div class="card-body">
+				<?php if ($this->session->emp_id == '02723-2022' ) {?>
+                            
+					<button class="btn btn-warning " id="updatebu"><i class="fa fa-refresh"></i> Update BU/s</button>
+				<?php } ?>
 			<div class="d-flex">
 				<!-- Left side company list -->
 				
@@ -219,6 +223,7 @@
 				
 				<!-- Right side business units -->
 				<div class="flex-grow-1">
+					
 					<div class="table-responsive">
 						<table class="table table-striped table-bordered table-hover">
 							<thead class="table-primary">
@@ -266,6 +271,107 @@ let activeButton = document.querySelector('.list-group-item.active');
         clickedButton.classList.add('active');
     }
 
+</script>
+
+<script>
+	$(document).ready(function () {
+
+		
+		function autoUpdateBu() {
+			return $.ajax({
+				url: '<?php echo site_url('employee/autoUpdateBu'); ?>',
+				type: 'POST',
+				dataType: 'json'
+			});
+		}
+
+
+		
+		$('#updatebu').click(function () {
+
+			Swal.fire({
+				title: 'Please wait...',
+				html: 'Updating business units...',
+				allowOutsideClick: false,
+				allowEscapeKey: false,
+				didOpen: () => {
+					Swal.showLoading();
+				}
+			});
+
+			autoUpdateBu()
+			.done(function(response) {
+
+				let html = '';
+
+				html += '<b>' + response.updated_count + '</b> business unit(s) updated.<br>';
+				html += '<b>' + response.new_count + '</b> new business unit(s) inserted.<br><br>';
+
+				// Updated business units
+				if (response.updated_count > 0) {
+
+					html += '<h5 style="text-align:left;">Updated Business Units</h5>';
+					html += '<div style="text-align:left;max-height:180px;overflow-y:auto;">';
+
+					response.updated.forEach(function(bu) {
+
+						html +=
+							'<b>' + bu.bcode + '</b><br>' +
+							bu.old_name +
+							' <i class="fa fa-arrow-right"></i> ' +
+							bu.new_name +
+							'<br><br>';
+
+					});
+
+					html += '</div>';
+				}
+
+				// New business units
+				if (response.new_count > 0) {
+
+					html += '<h5 style="text-align:left;margin-top:15px;">New Business Units</h5>';
+					html += '<div style="text-align:left;max-height:180px;overflow-y:auto;">';
+
+					response.new.forEach(function(bu) {
+
+						html +=
+							'<b>' + bu.bcode + '</b> - ' +
+							bu.business_unit +
+							'<br>';
+
+					});
+
+					html += '</div>';
+				}
+
+				if (response.updated_count === 0 && response.new_count === 0) {
+					html = 'No changes were found.';
+				}
+
+				Swal.fire({
+					icon: 'success',
+					title: 'Completed',
+					html: html,
+					width: 700
+				});
+
+			})
+			.fail(function () {
+
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'Failed to update business units.'
+				});
+
+			});
+
+		});
+
+		
+
+	});
 </script>
 <script src="<?=base_url()?>assets/js/jquery/jquery.min.js"></script>
 <script src="<?=base_url()?>assets/libs/jquery-ui/dist/jquery-ui.min.js"></script>
