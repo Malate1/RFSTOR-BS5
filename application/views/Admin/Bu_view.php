@@ -182,10 +182,11 @@
     
         <div class="card border-top border-primary">
             <div class="card-body">
-				<?php if ($this->session->emp_id == '02723-2022' ) {?>
-                            
-					<button class="btn btn-warning " id="updatebu"><i class="fa fa-refresh"></i> Update BU/s</button>
-				<?php } ?>
+				<!-- <?php if ($this->session->emp_id == '02723-2022' ) {?> -->
+                            <!-- <i class="fa fa-edit " aria-hidden="true" ></i> -->
+					<button class="btn btn-warning " id="updatebu"><i class="fa fa-edit"  aria-hidden="true"></i> Update BU/s</button>
+					<br>
+				<!-- <?php } ?> -->
 			<div class="d-flex">
 				<!-- Left side company list -->
 				

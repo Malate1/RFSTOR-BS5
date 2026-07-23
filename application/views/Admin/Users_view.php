@@ -263,10 +263,10 @@ body.dark-theme table.dataTable tbody tr {
                     <div class="col-xs-9" style="text-align: right; padding-top: 20px;">
                                     
 
-                        <?php if ($this->session->emp_id == '02723-2022' ) {?>
-                            <button class="btn btn-warning " id="refreshButton"><i class="fa fa-refresh"></i> Refresh</button>
-                            <button class="btn btn-warning " id="refreshButton2"><i class="fa fa-refresh"></i> Update Name</button>
-                        <?php } ?>
+                        
+                            <button class="btn btn-warning " id="refreshButton"><i class="fa fa-edit " aria-hidden="true" ></i> Update Status</button>
+                            <button class="btn btn-warning " id="refreshButton2"><i class="fa fa-edit " aria-hidden="true" ></i> Update Name</button>
+                        
                     </div>
                     <div class="table-responsive">
                         <table id="dt-users" class="table w-100 table-striped table-bordered display text-nowrap">
