@@ -157,6 +157,68 @@ class Employee extends CI_Controller {
 		));
 	}
 
+	public function getBday()
+	{
+		$updatedUsers = $this->employee_model->getBday();
+
+		echo json_encode(array(
+			'status'  => 'success',
+			'updated' => count($updatedUsers),
+			'users'   => $updatedUsers
+		));
+	}
+
+	public function getTodaysBirthday()
+	{
+		$users = $this->employee_model->getTodaysBirthday();
+
+		
+
+		echo json_encode(array(
+			'count' => count($users),
+			'users' => $users
+		));
+	}
+
+	// public function getTodaysBirthdayFromApplicant()
+	// {
+	// 	$users = $this->employee_model->getTodaysBirthdayFromApplicant();
+
+	// 	echo json_encode(array(
+	// 		'status' => 'success',
+	// 		'count'  => count($users),
+	// 		'users'  => $users
+	// 	));
+	// }
+
+	
+	public function getTodaysBirthdayFromApplicant()
+	{
+		$birthday_date = $this->input->get('birthday_date');
+
+		// Validate date
+		if (empty($birthday_date)) {
+			echo json_encode(array(
+				'status' => 'error',
+				'message' => 'Birthday date is required.',
+				'count'  => 0,
+				'users'  => array()
+			));
+			return;
+		}
+
+		$users = $this->employee_model
+			->getTodaysBirthdayFromApplicant($birthday_date);
+
+		echo json_encode(array(
+			'status' => 'success',
+			'count'  => count($users),
+			'users'  => $users
+		));
+	}
+
+
+
 	public function autoUpdateBu()
 	{
 		$changes = $this->employee_model->autoUpdateBu();
@@ -169,6 +231,8 @@ class Employee extends CI_Controller {
 			'new'             => $changes['new']
 		));
 	}
+
+	
 
 	public function store_cebu() //passing data to model for adding user details
 	{

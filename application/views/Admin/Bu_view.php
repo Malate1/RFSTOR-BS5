@@ -316,14 +316,31 @@ let activeButton = document.querySelector('.list-group-item.active');
 
 					response.updated.forEach(function(bu) {
 
-						html +=
-							'<b>' + bu.bcode + '</b><br>' +
-							bu.old_name +
-							' <i class="fa fa-arrow-right"></i> ' +
-							bu.new_name +
-							'<br><br>';
+    html += '<b>' + escapeHtml(bu.bcode) + '</b><br>';
 
-					});
+    $.each(bu.changes, function(field, change) {
+
+        let fieldName = field
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, function(letter) {
+                return letter.toUpperCase();
+            });
+
+        html +=
+            '<div style="margin-left:15px;margin-top:5px;">' +
+                '<b>' + escapeHtml(fieldName) + ':</b> ' +
+                '<span style="color:#d9534f;">' +
+                    escapeHtml(change.old) +
+                '</span>' +
+                ' <i class="fa fa-arrow-right"></i> ' +
+                '<span style="color:#5cb85c;">' +
+                    escapeHtml(change.new) +
+                '</span>' +
+            '</div>';
+    });
+
+    html += '<br>';
+});
 
 					html += '</div>';
 				}

@@ -12,7 +12,7 @@
 	    var $search_column = array('requestnumber', 'groupname', 'companyname', 'business_unit', 'purpose' , 'name'); //set column field database for datatable searchable 
 	    var $order = array('requestnumber' => 'asc'); // default order 
 
-	    private function make_query1($table, $field, $field2, $type, $where,$type,$taskid){   
+	    private function make_query1($table, $field, $field2, $type, $where2,$taskid){   
 
 	        $userid = $this->session->userdata['user_id'];
 			

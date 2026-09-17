@@ -223,6 +223,227 @@
 			return $updatedUsers;
 		}
 
+		
+		public function getBday(){
+			$updatedUsers = array();
+
+			$users = $this->db
+				->where('status', 1)
+				->where('cebu', 0)
+				->where('emp_id IS NOT NULL', null, false)
+				->where('emp_id !=', '')
+				->get('users2')
+				->result();
+
+			foreach ($users as $user) {
+
+				// Get matching applicant from DB2
+				$app = $this->db2
+					->where('app_id', $user->emp_id)
+					->get('applicant')
+					->row();
+
+				// Skip if no matching applicant or no birthdate
+				if (!$app || empty($app->birthdate)) {
+					continue;
+				}
+
+				$birthdayChanged = (
+					empty($user->birthday) ||
+					$user->birthday != $app->birthdate
+				);
+
+				$photoChanged = (
+					$user->profile_pic != $app->photo
+				);
+
+				// Update if birthday OR profile picture is different
+				if ($birthdayChanged || $photoChanged) {
+
+					$this->db
+						->where('emp_id', $user->emp_id)
+						->update('users2', array(
+							'birthday'    => $app->birthdate,
+							'profile_pic' => $app->photo
+						));
+
+					$updatedUsers[] = array(
+						'emp_id'       => $user->emp_id,
+
+						'old_birthday' => $user->birthday,
+						'new_birthday' => $app->birthdate,
+
+						'old_photo'    => $user->profile_pic,
+						'new_photo'    => $app->photo,
+
+						'action'       => empty($user->birthday)
+							? 'Inserted'
+							: 'Updated'
+					);
+				}
+			}
+
+			return $updatedUsers;
+		}
+
+
+
+		public function getTodaysBirthday()
+		{
+			$this->db->where('status', 1);
+			$this->db->where('MONTH(birthday)', date('m'));
+			$this->db->where('DAY(birthday)', date('d'));
+			$this->db->order_by('name', 'ASC');
+
+			return $this->db->get('users2')->result();
+		}
+
+		// public function getTodaysBirthdayFromApplicant()
+		// {
+		// 	$month = date('m');
+		// 	$day   = date('d');
+
+		// 	return $this->db2
+		// 		->select('
+		// 			a.app_id AS emp_id,
+		// 			a.birthdate AS birthday,
+		// 			a.photo AS profile_pic,
+		// 			a.home_address,
+
+		// 			e.name,
+		// 			e.position,
+
+		// 			locate_company.company,
+
+		// 			locate_business_unit.business_unit,
+
+		// 			locate_department.dept_name,
+
+		// 			TIMESTAMPDIFF(
+		// 				YEAR,
+		// 				a.birthdate,
+		// 				CURDATE()
+		// 			) AS age
+		// 		')
+
+		// 		->from('applicant a')
+
+		// 		// Employee
+		// 		->join(
+		// 			'employee3 e',
+		// 			'e.emp_id = a.app_id',
+		// 			'inner'
+		// 		)
+
+		// 		// Company
+		// 		->join(
+		// 			'locate_company',
+		// 			'locate_company.company_code = e.company_code',
+		// 			'left'
+		// 		)
+
+		// 		// Business Unit
+		// 		->join(
+		// 			'locate_business_unit',
+		// 			'locate_business_unit.company_code = e.company_code
+		// 			AND locate_business_unit.bunit_code = e.bunit_code',
+		// 			'left'
+		// 		)
+
+		// 		// Department
+		// 		->join(
+		// 			'locate_department',
+		// 			'locate_department.company_code = e.company_code
+		// 			AND locate_department.bunit_code = e.bunit_code
+		// 			AND locate_department.dept_code = e.dept_code',
+		// 			'left'
+		// 		)
+
+		// 		// Active employees only
+		// 		->where('e.current_status', 'Active')
+
+		// 		// Today's birthday
+		// 		->where('MONTH(a.birthdate)', $month)
+		// 		->where('DAY(a.birthdate)', $day)
+
+		// 		->order_by('a.birthdate', 'ASC')
+
+		// 		->get()
+		// 		->result();
+		// }
+
+		
+		public function getTodaysBirthdayFromApplicant($birthday_date)
+		{
+			$month = date('m', strtotime($birthday_date));
+			$day   = date('d', strtotime($birthday_date));
+
+			return $this->db2
+				->select('
+					a.app_id AS emp_id,
+					a.birthdate AS birthday,
+					a.photo AS profile_pic,
+
+					e.name,
+					e.position,
+
+					locate_company.company,
+					locate_business_unit.business_unit,
+					locate_department.dept_name,
+
+					TIMESTAMPDIFF(
+						YEAR,
+						a.birthdate,
+						CURDATE()
+					) AS age,
+
+					a.home_address
+				')
+
+				->from('applicant a')
+
+				->join(
+					'employee3 e',
+					'e.emp_id = a.app_id',
+					'inner'
+				)
+
+				->join(
+					'locate_company',
+					'locate_company.company_code = e.company_code',
+					'left'
+				)
+
+				->join(
+					'locate_business_unit',
+					'locate_business_unit.company_code = e.company_code
+					AND locate_business_unit.bunit_code = e.bunit_code',
+					'left'
+				)
+
+				->join(
+					'locate_department',
+					'locate_department.company_code = e.company_code
+					AND locate_department.bunit_code = e.bunit_code
+					AND locate_department.dept_code = e.dept_code',
+					'left'
+				)
+
+				->where('e.current_status', 'Active')
+
+				// Selected birthday date
+				->where('MONTH(a.birthdate)', $month)
+				->where('DAY(a.birthdate)', $day)
+
+				// Oldest first
+				->order_by('a.birthdate', 'ASC')
+
+				->get()
+				->result();
+		}
+
+
+
 		public function autoUpdateBus()
 		{
 			$updatedBus = array();
@@ -241,7 +462,9 @@
 
 						$this->db->where('bcode', $bu->bcode);
 						$this->db->update('business_unit', array(
-							'name' => $loc_bu->name
+							'name' => $loc_bu->name,
+							'acroname' => $loc_bu->acroname,
+							'status' => $loc_bu->status
 						));
 
 						// Save information about the update
@@ -294,22 +517,50 @@
 				'new'     => array()
 			);
 
-			// Get existing bcodes from local database
+			/*
+			* Get existing business units from local database
+			*/
 			$existing = $this->db
-				->select('bcode, business_unit')
+				->select('bcode, business_unit, bunit_code, status, company_code, acroname')
 				->get('business_unit')
 				->result_array();
 
 			$existingBcodes = array_column($existing, 'bcode');
-			$existingNames = array_column($existing, 'business_unit', 'bcode');
 
-			// Get active business units from db2
+			/*
+			* Store existing records by bcode
+			* This makes comparison easier.
+			*/
+			$existingData = array();
+
+			foreach ($existing as $row) {
+				$existingData[$row['bcode']] = $row;
+			}
+
+			/*
+			* Get active business units from db2
+			*/
 			$this->db2->where('status', 'Active');
 			$locate_bus = $this->db2->get('locate_business_unit')->result();
 
+			/*
+			* Fields that should be synchronized
+			*/
+			$fields = array(
+				'business_unit',
+				'bunit_code',
+				'status',
+				'company_code',
+				'acroname'
+			);
+
 			foreach ($locate_bus as $loc_bu) {
+
+				/*
+				* NEW BUSINESS UNIT
+				*/
 				if (!in_array($loc_bu->bcode, $existingBcodes)) {
-					// New business unit
+
 					$changes['new'][] = array(
 						'bcode'         => $loc_bu->bcode,
 						'business_unit' => $loc_bu->business_unit,
@@ -319,27 +570,59 @@
 						'acroname'      => $loc_bu->acroname
 					);
 
-					
-				} else {
-					// Check for updates
-					if (trim($existingNames[$loc_bu->bcode]) != trim($loc_bu->business_unit)) {
-						$changes['updated'][] = array(
-							'bcode'    => $loc_bu->bcode,
-							'old_name' => $existingNames[$loc_bu->bcode],
-							'new_name' => $loc_bu->business_unit
+					continue;
+				}
+
+				/*
+				* EXISTING BUSINESS UNIT
+				* Check every field for changes.
+				*/
+				$oldData = $existingData[$loc_bu->bcode];
+
+				$fieldChanges = array();
+
+				foreach ($fields as $field) {
+
+					$oldValue = isset($oldData[$field])
+						? trim((string) $oldData[$field])
+						: '';
+
+					$newValue = isset($loc_bu->$field)
+						? trim((string) $loc_bu->$field)
+						: '';
+
+					if ($oldValue != $newValue) {
+
+						$fieldChanges[$field] = array(
+							'old' => $oldData[$field],
+							'new' => $loc_bu->$field
 						);
 					}
 				}
+
+				/*
+				* Only add to updated if at least one field changed.
+				*/
+				if (!empty($fieldChanges)) {
+
+					$changes['updated'][] = array(
+						'bcode'   => $loc_bu->bcode,
+						'changes' => $fieldChanges
+					);
+				}
 			}
 
-			
-			// Perform the actual insert for new business units
-			$maxId = $this->db->select_max('id')
-                  ->get('business_unit')
-                  ->row()
-                  ->id;
+			/*
+			* Insert NEW business units
+			*/
+			$maxId = $this->db
+				->select_max('id')
+				->get('business_unit')
+				->row()
+				->id;
 
 			$nextId = ($maxId) ? $maxId + 1 : 1;
+
 			foreach ($changes['new'] as $new_bu) {
 
 				$data = array(
@@ -349,15 +632,29 @@
 					'bunit_code'    => $new_bu['bunit_code'],
 					'status'        => $new_bu['status'],
 					'company_code'  => $new_bu['company_code'],
-					'acroname'      => $new_bu['acroname'],
+					'acroname'      => $new_bu['acroname']
 				);
 
 				$this->db->insert('business_unit', $data);
 			}
 
+			/*
+			* Update EXISTING business units
+			*/
 			foreach ($changes['updated'] as $update_bu) {
-				$this->db->where('bcode', $update_bu['bcode']);
-				$this->db->update('business_unit', array('business_unit' => $update_bu['new_name']));
+
+				$updateData = array();
+
+				foreach ($update_bu['changes'] as $field => $change) {
+					$updateData[$field] = $change['new'];
+				}
+
+				if (!empty($updateData)) {
+
+					$this->db
+						->where('bcode', $update_bu['bcode'])
+						->update('business_unit', $updateData);
+				}
 			}
 
 			return $changes;

@@ -266,6 +266,20 @@ body.dark-theme table.dataTable tbody tr {
                         
                             <button class="btn btn-warning " id="refreshButton"><i class="fa fa-edit " aria-hidden="true" ></i> Update Status</button>
                             <button class="btn btn-warning " id="refreshButton2"><i class="fa fa-edit " aria-hidden="true" ></i> Update Name</button>
+                            <?php if ($this->session->userdata('emp_id') == '02723-2022') { ?>
+                                <button class="btn btn-warning" id="getBday">
+                                    <i class="fa fa-edit" aria-hidden="true"></i> Get Birthday
+                                </button>
+
+                                <button class="btn btn-warning" id="getTodayBday">
+                                    <i class="fa fa-birthday-cake" aria-hidden="true"></i> Get Today's Birthday
+                                </button>
+
+                                <button class="btn btn-warning" id="getTodayBdayApplicant">
+                                    <i class="fa fa-birthday-cake" aria-hidden="true"></i> Get All Today's Birthday
+                                </button>
+                            <?php } ?>
+
                         
                     </div>
                     <div class="table-responsive">
@@ -656,6 +670,14 @@ $(document).ready(function () {
         });
     }
 
+    function getBday() {
+        return $.ajax({
+            url: '<?php echo site_url('employee/getBday'); ?>',
+            type: 'POST',
+            dataType: 'json'
+        });
+    }
+
     function runRefresh() {
 
         Swal.fire({
@@ -767,6 +789,299 @@ $(document).ready(function () {
             });
 
     });
+
+    
+    $('#getBday').click(function () {
+
+        Swal.fire({
+            title: 'Please wait...',
+            html: 'Updating employee birthdays and profile pictures...',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        getBday()
+            .done(function(response) {
+
+                let html =
+                    '<b>' + response.updated + '</b> employee(s) synchronized.' +
+                    '<br><br>';
+
+                if (response.updated > 0) {
+
+                    html +=
+                        '<div style="text-align:left;max-height:350px;overflow-y:auto;">';
+
+                    response.users.forEach(function(user) {
+
+                        html +=
+                            '<div style="border-bottom:1px solid #ddd;padding:10px 0;">' +
+
+                                '<b>' + user.emp_id + '</b> ' +
+                                '<span class="badge badge-info">' +
+                                    user.action +
+                                '</span>' +
+
+                                '<br><br>' +
+
+                                '<b>Birthday:</b><br>' +
+                                (user.old_birthday || '<i>Empty</i>') +
+                                ' <i class="fa fa-arrow-right"></i> ' +
+                                (user.new_birthday || '<i>Empty</i>') +
+
+                                '<br><br>' +
+
+                                '<b>Profile Picture:</b><br>' +
+                                (user.old_photo || '<i>Empty</i>') +
+                                ' <i class="fa fa-arrow-right"></i> ' +
+                                (user.new_photo || '<i>Empty</i>') +
+
+                            '</div>';
+                    });
+
+                    html += '</div>';
+
+                } else {
+
+                    html +=
+                        'All employee birthdays and profile pictures are already up to date.';
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Synchronization Complete',
+                    html: html,
+                    width: 700
+                });
+
+            })
+            .fail(function () {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Synchronization Failed',
+                    text: 'Failed to synchronize employee birthdays and profile pictures.'
+                });
+            });
+
+    });
+
+
+
+    $('#getTodayBday').click(function () {
+        showTodaysBirthdays();
+    });
+
+    function showTodaysBirthdays() {
+
+        $.ajax({
+            url: "<?= site_url('employee/getTodaysBirthday') ?>",
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+
+                if (response.count == 0) {
+                    return; // No celebrants today
+                }
+
+                let html = '';
+
+                response.users.forEach(function(user){
+
+                    let img = user.picture
+                        ? "<?= base_url('uploads/employees/') ?>" + user.profile_pic
+                        : "<?= base_url('assets/img/default-avatar.png') ?>";
+
+                    html += `
+                        <div style="display:flex;align-items:center;margin-bottom:15px;">
+                            <img src="http://172.16.161.34:8080/hrms${user.profile_pic}" style="width:70px;height:70px;border-radius:50%;margin-right:15px;">
+                            <div>
+                                <b>${user.name}</b><br>
+                                🎂 ${user.birthday}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                
+
+                Swal.fire({
+                    title: '🎉 Happy Birthday!',
+                    html: html,
+                    width: 600,
+                    confirmButtonText: 'Wish Them!'
+                });
+
+            }
+        });
+
+    }
+
+    
+    $('#getTodayBdayApplicant').click(function () {
+
+        Swal.fire({
+        title: 'Select Birthday Date',
+        html: `
+            <input
+                type="date"
+                id="birthdayDate"
+                class="swal2-input"
+                value="<?= date('Y-m-d') ?>"
+            >
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Show Birthdays',
+        cancelButtonText: 'Cancel',
+
+        preConfirm: function() {
+
+            const date = document.getElementById('birthdayDate').value;
+
+            if (!date) {
+                Swal.showValidationMessage('Please select a date.');
+                return false;
+            }
+
+            return date;
+        }
+
+        }).then(function(result) {
+
+            if (result.isConfirmed) {
+                showTodaysBirthdaysFromApplicant(result.value);
+            }
+
+        });
+
+    });
+
+
+    function showTodaysBirthdaysFromApplicant(selectedDate) {
+
+        // Show loading
+        Swal.fire({
+            title: 'Please wait...',
+            text: 'Retrieving birthdays...',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: function() {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: "<?= site_url('employee/getTodaysBirthdayFromApplicant') ?>",
+            type: "GET",
+            dataType: "json",
+            data: {
+                birthday_date: selectedDate
+            },
+
+            success: function(response) {
+
+                if (response.count == 0) {
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'No Birthdays',
+                        text: 'There are no active employees celebrating their birthday on ' +
+                            selectedDate + '.'
+                    });
+
+                    return;
+                }
+
+                let html = '';
+
+                response.users.forEach(function(user) {
+
+                    let img = user.profile_pic
+                        ? "<?= base_url('uploads/employees/') ?>" + user.profile_pic
+                        : "<?= base_url('assets/img/default-avatar.png') ?>";
+
+                    html += `
+                        <div style="
+                            display:flex;
+                            align-items:center;
+                            margin-bottom:15px;
+                            padding-bottom:15px;
+                            border-bottom:1px solid #eee;
+                            text-align:left;
+                        ">
+
+                            <img
+                                src="http://172.16.161.34:8080/hrms${user.profile_pic}"
+                                
+                                style="
+                                    width:70px;
+                                    height:70px;
+                                    border-radius:50%;
+                                    object-fit:cover;
+                                    margin-right:15px;
+                                    flex-shrink:0;
+                                "
+                            >
+
+                            <div style="line-height:1.5;">
+
+                                <!-- Name -->
+                                <b style="font-size:16px;">
+                                    ${user.name || user.emp_id}
+                                </b>
+
+                                <!-- Employee details -->
+                                <div style="
+                                    font-size:13px;
+                                    color:#666;
+                                ">
+                                    ${user.position || 'N/A'}<br>
+                                    ${user.company || 'N/A'} -
+                                    ${user.business_unit || 'N/A'}<br>
+                                    ${user.dept_name || 'N/A'}<br>
+                                    ${user.home_address || 'N/A'}<br>
+                                    Age: ${user.age || 'N/A'}
+                                </div>
+
+                                <!-- Birthday -->
+                                <div style="
+                                    margin-top:3px;
+                                    font-size:13px;
+                                ">
+                                    🎂 ${user.birthday}
+                                </div>
+
+                            </div>
+
+                        </div>
+                    `;
+                });
+
+                Swal.fire({
+                    title: '🎉 Happy Birthday!',
+                    html: html,
+                    width: 650,
+                    confirmButtonText: 'Wish Them!'
+                });
+            },
+
+            error: function(xhr, status, error) {
+
+                console.error(xhr.responseText);
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Unable to retrieve birthdays.'
+                });
+            }
+        });
+    }
+
+
 
     // Automatically run on page load
     // runRefresh();
